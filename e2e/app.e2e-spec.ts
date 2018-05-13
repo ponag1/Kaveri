@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('kaveri App', () => {
+describe('mojani App', () => {
   let page: AppPage;
 
   beforeEach(() => {
