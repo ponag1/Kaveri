@@ -9,7 +9,7 @@ cloudant.db.create(process.env.KAVERI_DB, function(err) {
         }
 		
 });
-//connect to MOJANI DB
+//connect to Kaveri DB
 var kaveri = cloudant.use(process.env.KAVERI_DB);
   
   //create index in db on ward no if not existing
@@ -41,7 +41,7 @@ var kaveri = cloudant.use(process.env.KAVERI_DB);
     }
  });
 
-/* POST API to create a new land record in MOJANI*/
+/* POST API to create a new land record in Kaveri*/
 router.post('/api/addLandRecordKaveri', (req, res) => {
   console.log('Inside Express api to add new land record kaveri');
   console.log("Received PID: " + req.body.txnid);
@@ -76,12 +76,12 @@ router.post('/api/updateKaveriApprovedStatus', (req, res) => {
 		records[i]["_rev"] = result.docs[i]["_rev"];
         documentIdsAdded.push(result.docs[i].pid);
 		}
-		  mojani.bulk({docs : records}, function(err, doc) {
+		  kaveri.bulk({docs : records}, function(err, doc) {
 					if (err) {
-						console.log("Error updating records to Mojani" +err);
+						console.log("Error updating records to Kaveri" +err);
 						res.json({success : false, message : err+""});
 					} else{
-						console.log("success saving records to Mojani");
+						console.log("success saving records to Kaveri");
 				       res.json({success : true, documentIdsAdded : documentIdsAdded});
 					}				
 				});	
@@ -90,10 +90,10 @@ router.post('/api/updateKaveriApprovedStatus', (req, res) => {
 });
 
 
-/* GET API to get land records from MOJANI using ward No*/
-router.get('/api/getLandRecordsMojaniByWard/:id', (req, res) => {
+/* GET API to get land records from Kaveri using ward No*/
+router.get('/api/getLandRecordsKaveriByWard/:id', (req, res) => {
   console.log('Inside Express api to get land records');
-mojani.find({selector:{wardNo:req.params.id}}, function(er, result) {
+kaveri.find({selector:{wardNo:req.params.id}}, function(er, result) {
 	  if (er) {
 		console.log("Error finding documents");
 		res.json({success : false,message:"Error finding documents",landRecords:null});
@@ -106,10 +106,10 @@ mojani.find({selector:{wardNo:req.params.id}}, function(er, result) {
 	});
 });
 
-/* GET API to get land records from MOJANI using PID*/
-router.get('/api/getLandRecordsMojaniByPid/:id', (req, res) => {
+/* GET API to get land records from Kaveri using PID*/
+router.get('/api/getLandRecordsKaveriByPid/:id', (req, res) => {
   console.log('Inside Express api to get land records by Pid');
-mojani.find({selector:{pid:Number(req.params.id)}}, function(er, result) {
+  kaveri.find({selector:{pid:Number(req.params.id)}}, function(er, result) {
 	  if (er) {
 		console.log("Error finding documents");
 		res.json({success : false,message:"Error finding documents",landRecords:null});
@@ -119,10 +119,7 @@ mojani.find({selector:{pid:Number(req.params.id)}}, function(er, result) {
 		console.log('Doc:'+ JSON.stringify(result.docs[i]));
 	  } */
 	  
-	  if(result.docs.length > 0)
-			res.json({success : true, message:"Found "+result.docs.length+" documents", landRecords:result.docs[0]});
-		else
-			res.json({success : true, message:"Found "+result.docs.length+" documents", landRecords:{}});
+	  res.json({success : true, message:"Found "+result.docs.length+" documents", landRecords:result.docs});
 	});
 });
 

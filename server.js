@@ -26,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 // Set our API routes based on application routes
 app.use('/login', login_api);
 app.use('/manageLandRecords', mojani_api);
+app.use('/manageKaveriRecords', kaveri_api);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {

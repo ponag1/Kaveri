@@ -1,6 +1,6 @@
 export class LandRecord {
   pid: number;
-  txnID: number;
+  txnID: string;
   wardNo: number;
   areaCode: number;
   siteNo: number;
@@ -8,6 +8,7 @@ export class LandRecord {
   owner: Owner;
   newowner: Owner;
   preMutationSketch: string;
+  TimeStamp: any;
   isMojaniApproved : boolean;
   isKaveriApproved: boolean;
   constructor() { }

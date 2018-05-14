@@ -43,5 +43,11 @@ export class ManageLandRecordsService {
         .map(res => res.json());     
     }
 
+      // API: GET /landRecords/:pId
+  public getLandRecordsKaveriByPid(pId: number) : Observable<any> {
+    console.log("Inside getLandRecordsKaveriByPid method in manageLandRecord service");
+    return this.http.get('/manageKaveriRecords/api/getLandRecordsKaveriByPid/'+pId) 
+    .map(res => res.json() );
+}
 
 }
