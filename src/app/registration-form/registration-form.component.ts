@@ -63,6 +63,7 @@ export class RegistrationFormComponent implements OnInit {
     this.lat=null;
     this.long = null;
     this.layoutForm = this.formBuilder.group({
+      TimeStamp: [null],
       pid: [''],
       wardNo: [null],
       areaCode: [null],
@@ -141,7 +142,7 @@ export class RegistrationFormComponent implements OnInit {
       this.landRecord.txnID = this.IDGenerator();
       console.log("pid generated: " + this.landRecord.pid);
 
-      this.manageLandRecordsService.addLandRecordMojani(this.landRecord)
+      this.manageLandRecordsService.addLandRecordKaveri(this.landRecord)
         .subscribe(
         response => {
           console.log("res received addLandRecord service" + JSON.stringify(response));

@@ -48,6 +48,15 @@ export class ManageLandRecordsService {
     console.log("Inside getLandRecordsKaveriByPid method in manageLandRecord service");
     return this.http.get('/manageKaveriRecords/api/getLandRecordsKaveriByPid/'+pId) 
     .map(res => res.json() );
-}
+  }
+  
+  // API: POST /landRecords/landRecord
+  public addLandRecordKaveri(landRecord: LandRecord){
+    console.log("Inside addLandRecordKaveri method in manageLandRecord service");
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post('/manageKaveriRecords/api/addLandRecordKaveri', JSON.stringify(landRecord), { headers: headers })
+      .map(res => res.json());     
+  }
 
 }
