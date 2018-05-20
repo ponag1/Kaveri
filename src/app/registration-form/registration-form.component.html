@@ -2,9 +2,9 @@
   <h3>KAVERI- Registration Application</h3>
 </div>
 <div align="right"><app-logout></app-logout></div>
-<div *ngIf ="!transferClicked;then registrationForm1 else registrationForm2"></div>
+<div *ngIf ="template==='form1';then registrationForm1 else registrationForm2"></div>
 <ng-template #registrationForm1>
-<div class="panel panel-default">
+  <div class="panel panel-default">
   <div class="panel-heading">
     <h1 class="panel-title">Search Criteria</h1>
   </div>
@@ -21,7 +21,81 @@
   </div>  
 </div>
 <!--Search results of the land records for Registration -->
-<div *ngIf= "fetchComplete" >
+<div *ngIf= "fetchComplete" >  
+    <!-- <div  align="center">
+        <h4>Survey Land Allotee Details</h4>
+      </div>
+      <table class="table table-striped">
+      <thead>
+          <tr>
+              <th>Allottee Name</th>
+              <th>Aadhar #</th>
+              <th>Mobile</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Is Mojani Approved</th>          
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>{{landRecordsMojani.ownerDetails.ownerName}}</td>
+              <td>{{landRecordsMojani.ownerDetails.aadharNo}}</td>
+              <td>{{landRecordsMojani.ownerDetails.mobileNo}}</td>
+              <td>{{landRecordsMojani.ownerDetails.emailID}}</td>
+              <td>{{landRecordsMojani.ownerDetails.address}}</td>
+              <td><input type="checkbox" name='mojaniApproval' [ngModel]='landRecordsMojani.isMojaniSubmitted' disabled/></td>         
+          </tr>
+      </tbody>
+     </table>  -->
+     <div *ngIf='noSearchResultsSurvey' style='color:red;' align='center'><strong>No matching results found !</strong></div>
+   <form class="form-horizontal">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title">Survey Land Allotee Details</h1>
+      </div>
+      <div class="panel-body"> 
+          <div class="form-group">
+          <div class="col-md-4">
+            <label for="ownerName" class="control-label">Allottee Name</label>
+            <input type="text" id="ownerName" class="form-control" name="ownerName" [ngModel]="landRecordsMojani.ownerDetails.ownerName" readonly>
+          </div>
+          <div class="col-md-4">
+            <label for="aadharNo" class="control-label">Aadhar #</label>
+            <input type="text" id="aadharNo" class="form-control" name="aadharNo" [ngModel]="landRecordsMojani.ownerDetails.aadharNo" readonly/>
+          </div>
+          <div class="col-md-4">
+          <div> <label class="control-label">Gender</label></div>
+            <label class="md-check radio-inline">
+              <input type="radio" value="M" name="gender" [ngModel]="landRecordsMojani.ownerDetails.gender" disabled>Male
+            </label>
+            <label class="md-check radio-inline">
+              <input type="radio" value="F" name="gender" [ngModel]="landRecordsMojani.ownerDetails.gender" disabled>Female
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-4">
+            <label for="mobileNo" class="control-label">Mobile</label>
+            <input type="text" id="mobileNo" class="form-control" name="mobileNo" [ngModel]="landRecordsMojani.ownerDetails.mobileNo" readonly/>
+          </div>
+          <div class="col-md-4">
+            <label for="emailID" class="control-label">Email ID</label>
+            <input type="text" id="emailID" class="form-control" name="emailID" [ngModel]="landRecordsMojani.ownerDetails.emailID" readonly />
+          </div>
+          <div class="col-md-4">
+              <label for="mojaniApproved" class="control-label">Is Mojani Approved</label>
+              <input type="checkbox" id="mojaniApproved" name="mojaniApproved" [ngModel]="landRecordsMojani.isMojaniSubmitted" disabled />
+            </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <div><label for="ownerAddress" class="control-label">Allottee Address</label></div>
+            <input type="text" id="ownerAddress" class="form-control" name="address" [ngModel]="landRecordsMojani.ownerDetails.address" readonly/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form> 
   <div  align="center">
     <h4>Transaction History</h4>
   </div>
@@ -29,35 +103,36 @@
   <thead>
       <tr>
           <th>Transaction ID </th>
-          <th>Current Owner Name</th>
-          <th>Current Owner Aadhaar No</th>
-          <th>Current Owner Mobile No</th>
-          <th>New Owner Name</th>
-          <th>New Owner Aadhaar No</th>
-          <th>New Owner Modile No</th>
+          <th>From Owner Name</th>
+          <th>From Owner Aadhaar No</th>
+          <th>From Owner Mobile No</th>
+          <th>To Owner Name</th>
+          <th>To Owner Aadhaar No</th>
+          <th>To Owner Mobile No</th>          
       </tr>
   </thead>
   <tbody>
       <tr *ngFor="let land of landRecords">
           <td>{{land.txnID}}</td>
-          <td>{{land.owner.ownerName}}</td>
-          <td>{{land.owner.aadharNo}}</td>
-          <td>{{land.owner.mobileNo}}</td>
-          <td>{{land.newowner.ownerName}}</td>
-          <td>{{land.newowner.aadharNo}}</td>
-          <td>{{land.newowner.mobileNo}}</td>
+          <td>{{land.ownerDetails.ownerName}}</td>
+          <td>{{land.ownerDetails.aadharNo}}</td>
+          <td>{{land.ownerDetails.mobileNo}}</td>
+          <td>{{land.newOwnerDetails.newownerName}}</td>
+          <td>{{land.newOwnerDetails.newaadharNo}}</td>
+          <td>{{land.newOwnerDetails.newmobileNo}}</td>         
       </tr>
   </tbody>
  </table> 
  <div *ngIf='noSearchResults' style='color:red;' align='center'><strong>No matching results found !</strong></div>
  <div align="right">
-    <button class="btn btn-primary" (click)= "loadRegistrationForm()">Transfer Ownership</button>
+    <button class="btn btn-primary" (click)= "loadRegistrationForm()" [disabled]="noSearchResults && noSearchResultsSurvey">Transfer Ownership</button>
  </div>
 </div>
 </ng-template> 
 
 <!-- Tranfer ownership editable form -->
 <ng-template #registrationForm2>
+  <ng-container *ngIf="template==='form2';else applicationSuccess">
   <div class="applicationForm">
   <form class="form-horizontal" [formGroup]="layoutForm" (ngSubmit)="onSubmit()">
     <fieldset disabled>
@@ -140,7 +215,7 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-default">
+    <!-- <div class="panel panel-default">
       <div class="panel-heading">
         <h1 class="panel-title">Land Sketch</h1>
       </div>
@@ -153,7 +228,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -238,7 +313,7 @@
               <label class="md-check radio-inline">
                 <input type="radio" value="F" name="newgender" formControlName="newgender">Female
               </label>
-              <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.gender')" errorMsg="Gender is mandatory"></app-show-validation-error>
+              <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.newgender')" errorMsg="Gender is mandatory"></app-show-validation-error>
             </div>
 
               </div>
@@ -281,14 +356,15 @@
     </div>
 
     <div align="right">
-      <button class="btn btn-danger">Back</button>
+      <button class="btn btn-danger" (click) = "back()">Back</button>
       <button type="submit" class="btn btn-primary">Submit</button>
     </div>
   </form>
 </div>
+</ng-container>
 </ng-template>
 <ng-template #applicationSuccess>
-  <div class="alert alert-success"> <strong>Success!</strong>Registration application has been submitted successfully ! The transaction ID for this record is <strong>{{landRecord.txnid}}</strong></div>
+  <div class="alert alert-success"> <strong>Success!</strong>Registration application has been submitted successfully ! The transaction ID for this record is <strong>{{landRecord.txnID}}</strong></div>
   <div class="alert alert-info">
     Please click on <strong>Submit New</strong> to submit another registration application !
   </div>

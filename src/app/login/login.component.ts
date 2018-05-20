@@ -44,11 +44,11 @@ export class LoginComponent implements OnInit {
                 console.log("Inside mojani approver");
                 this.router.navigateByUrl('/approveSurveys');
               } 
-              else if(this.loginAuthService.getLoggedInRole() == "kaveri_Registrar"){
+              else if(this.loginAuthService.getLoggedInRole() == "Kaveri_Registrar"){
                 console.log("Inside Registration form");
                 this.router.navigateByUrl('/registrationForm');
               }
-              else if(this.loginAuthService.getLoggedInRole() == "kaveri_Approver"){
+              else if(this.loginAuthService.getLoggedInRole() == "Kaveri_Approver"){
                 console.log("Inside Registration approver form");
                 this.router.navigateByUrl('/approveRegistration');
               }            

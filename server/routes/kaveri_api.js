@@ -44,7 +44,7 @@ var kaveri = cloudant.use(process.env.KAVERI_DB);
 /* POST API to create a new land record in Kaveri*/
 router.post('/api/addLandRecordKaveri', (req, res) => {
   console.log('Inside Express api to add new land record kaveri');
-  console.log("Received PID: " + req.body.txnid);
+  console.log("Received txnid: " + req.body.txnid);
   var record = req.body;
   var id = req.body.txnid;
     kaveri.insert(record, id, function(err, doc) {
@@ -89,11 +89,10 @@ router.post('/api/updateKaveriApprovedStatus', (req, res) => {
 	}); 
 });
 
-
-/* GET API to get land records from Kaveri using ward No*/
+/* GET API to get land records from MOJANI using ward No*/
 router.get('/api/getLandRecordsKaveriByWard/:id', (req, res) => {
   console.log('Inside Express api to get land records');
-kaveri.find({selector:{wardNo:req.params.id}}, function(er, result) {
+	kaveri.find({selector:{wardNo:req.params.id}}, function(er, result) {
 	  if (er) {
 		console.log("Error finding documents");
 		res.json({success : false,message:"Error finding documents",landRecords:null});
@@ -115,13 +114,8 @@ router.get('/api/getLandRecordsKaveriByPid/:id', (req, res) => {
 		res.json({success : false,message:"Error finding documents",landRecords:null});
 	  }
 	  console.log('Found documents with PID count:'+ req.params.id +":"+ result.docs.length);
-/* 	  for (var i = 0; i < result.docs.length; i++) {
-		console.log('Doc:'+ JSON.stringify(result.docs[i]));
-	  } */
-	  
 	  res.json({success : true, message:"Found "+result.docs.length+" documents", landRecords:result.docs});
 	});
 });
-
 
 module.exports = router;

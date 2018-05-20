@@ -5,8 +5,8 @@ export class LandRecord {
   areaCode: number;
   siteNo: number;
   geoData: GeoData;
-  owner: Owner;
-  newowner: Owner;
+  ownerDetails: Owner;
+  newOwnerDetails: Owner;
   preMutationSketch: string;
   TimeStamp: any;
   isMojaniApproved : boolean;

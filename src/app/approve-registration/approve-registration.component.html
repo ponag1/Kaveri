@@ -1,3 +1,69 @@
-<p>
-  approve-registration works!
-</p>
+<div  align="center">
+  <h3>KAVERI- Approve registration Applications</h3>
+</div>
+<div align="right"><app-logout></app-logout></div>
+ <div *ngIf="!viewRecord; then approveForm1 else approveForm2" ></div>
+ <ng-template #approveForm1>
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h1 class="panel-title">Search Criteria</h1>
+  </div>
+  <div class="panel-body">
+    <div class="form-group">
+      <div class="col-md-4">
+        <label for="wardNo" class="control-label required">Ward #</label>
+        <input type="text" id="wardNo" name="wardNo"  [(ngModel)]="wardNo"  />
+      </div>
+      <div class="col-md-4">
+      <button type="submit" class="btn btn-primary" (click)= "search()">Search</button>
+      </div>
+    </div>
+    </div>  
+    </div>
+<!--Search results of the land records for approval -->
+<div *ngIf= "fetchComplete" >
+<table class="table table-striped">
+  <thead>
+      <tr>
+          <th>Transaction ID</th>
+          <th>Property ID</th>
+          <th>Ward No</th>
+          <th>Area Code</th>
+          <th>Site No</th>
+          <th>Total Area</th>
+          <th>Approve</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let land of landRecords">
+          <td><a (click) = "viewData()">{{land.txnID}}</a></td>
+          <td>{{land.pid}}</td>
+          <td>{{land.wardNo}}</td>
+          <td>{{land.areaCode}}</td>
+          <td>{{land.siteNo}}</td>
+          <td>{{land.geoData.totalArea}}</td>
+         <td><input type="checkbox" name='approval'  [(ngModel)]='land.isKaveriApproved'  #approval="ngModel" /></td>
+      </tr>
+  </tbody>
+</table> 
+<div *ngIf='noSearchResults' style='color:red;' align='center'><strong>No matching results found !</strong></div>
+<div *ngIf='!noSearchResults' align='right'>
+<button type="submit" class="btn btn-primary" (click)= "onSubmit()">Approve</button>
+</div>
+</div>
+</ng-template>
+<ng-template #approveForm2>
+</ng-template>
+<!--Success message for the approval-->
+<ng-template #successMsg >
+<div class="alert alert-success"> <strong>Success!</strong>
+All the below approved records have been committed to the HyperLedger. Their unique digital Ids are listed below :
+<ul *ngFor= "let rec of approvedRecords">
+  <li>{{rec.pid}}</li>
+</ul>
+</div>
+  <div class="alert alert-info">
+    Please click on <strong>OK</strong> to approve other applications !
+  </div>
+  <div align="center"><button type="submit" class="btn btn-primary" (click)="submitNew()">OK</button></div>
+</ng-template>
