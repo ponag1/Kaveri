@@ -141,7 +141,7 @@ router.get('/api/getLandRecordsKaveriByPid/:id', (req, res) => {
 /* GET API to get land records from Kaveri using PID*/
 router.get('/api/getLandRecordsKaveriBytxnId/:id', (req, res) => {
   console.log('Inside Express api to get land records by Txn id');
-  kaveri.find({selector:{txnID:Number(req.params.id)}}, function(er, result) {
+  kaveri.find({selector:{txnID:String(req.params.id)}}, function(er, result) {
 	  if (er) {
 		console.log("Error finding documents");
 		res.json({success : false,message:"Error finding documents",landRecords:null});
