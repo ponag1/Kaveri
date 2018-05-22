@@ -10,14 +10,14 @@ export class ManageLandRecordsService {
 
   constructor(private http: Http) { }
 
-  // API: GET /landRecords/:pId
+  // API: GET /landRecords Mojani/:pId
   public getLandRecordsMojaniByPid(pId: number) : Observable<any> {
       console.log("Inside getLandRecordsMojaniByPid method in manageLandRecord service");
       return this.http.get('/manageLandRecords/api/getLandRecordsMojaniByPid/'+pId) 
       .map(res => res.json() );
   }
 
-  // API: GET /landRecords/:pId
+  // API: GET /landRecords Kaveri/:pId
   public getLandRecordsKaveriByPid(pId: number) : Observable<any> {
     console.log("Inside getLandRecordsKaveriByPid method in manageLandRecord service");
     return this.http.get('/manageKaveriRecords/api/getLandRecordsKaveriByPid/'+pId) 
@@ -40,12 +40,19 @@ export class ManageLandRecordsService {
       .map(res => res.json());     
   }
 
-    // API: POST /landRecords/landRecord[]
+   // API: POST /landRecords/landRecord[]
     public updateKaveriApprovedRecords(landRecords: LandRecord[]){
       console.log("Inside updateMojaniApprovedRecords method in manageLandRecord service");
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
-      return this.http.post('/manageLandRecords/api/updateMojaniApprovedStatus', JSON.stringify(landRecords), { headers: headers })
+      return this.http.post('/manageKaveriRecords/api/updateKaveriApprovedRecords', JSON.stringify(landRecords), { headers: headers })
         .map(res => res.json());     
     }
+
+    // API: GET /landRecords Kaveri/:pId
+   public getLandRecordsKaveriBytxnId(txnID: string) : Observable<any> {
+    console.log("Inside getLandRecordsKaveriBytxnId method in manageLandRecord service");
+    return this.http.get('/manageKaveriRecords/api/getLandRecordsKaveriBytxnId/'+txnID)
+    .map(res => res.json() );
+  }
 }

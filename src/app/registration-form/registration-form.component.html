@@ -21,40 +21,14 @@
   </div>  
 </div>
 <!--Search results of the land records for Registration -->
-<div *ngIf= "fetchComplete" >  
-    <!-- <div  align="center">
-        <h4>Survey Land Allotee Details</h4>
-      </div>
-      <table class="table table-striped">
-      <thead>
-          <tr>
-              <th>Allottee Name</th>
-              <th>Aadhar #</th>
-              <th>Mobile</th>
-              <th>Email</th>
-              <th>Address</th>
-              <th>Is Mojani Approved</th>          
-          </tr>
-      </thead>
-      <tbody>
-          <tr>
-              <td>{{landRecordsMojani.ownerDetails.ownerName}}</td>
-              <td>{{landRecordsMojani.ownerDetails.aadharNo}}</td>
-              <td>{{landRecordsMojani.ownerDetails.mobileNo}}</td>
-              <td>{{landRecordsMojani.ownerDetails.emailID}}</td>
-              <td>{{landRecordsMojani.ownerDetails.address}}</td>
-              <td><input type="checkbox" name='mojaniApproval' [ngModel]='landRecordsMojani.isMojaniSubmitted' disabled/></td>         
-          </tr>
-      </tbody>
-     </table>  -->
-     <div *ngIf='noSearchResultsSurvey' style='color:red;' align='center'><strong>No matching results found !</strong></div>
+<div *ngIf= "fetchComplete" > 
    <form class="form-horizontal">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h1 class="panel-title">Survey Land Allotee Details</h1>
       </div>
       <div class="panel-body"> 
-          <div class="form-group">
+          <div class="form-group" *ngIf="!noSearchResultsSurvey">
           <div class="col-md-4">
             <label for="ownerName" class="control-label">Allottee Name</label>
             <input type="text" id="ownerName" class="form-control" name="ownerName" [ngModel]="landRecordsMojani.ownerDetails.ownerName" readonly>
@@ -73,7 +47,7 @@
             </label>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="!noSearchResultsSurvey">
           <div class="col-md-4">
             <label for="mobileNo" class="control-label">Mobile</label>
             <input type="text" id="mobileNo" class="form-control" name="mobileNo" [ngModel]="landRecordsMojani.ownerDetails.mobileNo" readonly/>
@@ -84,14 +58,19 @@
           </div>
           <div class="col-md-4">
               <label for="mojaniApproved" class="control-label">Is Mojani Approved</label>
-              <input type="checkbox" id="mojaniApproved" name="mojaniApproved" [ngModel]="landRecordsMojani.isMojaniSubmitted" disabled />
+              <input type="checkbox" id="mojaniApproved" name="mojaniApproved" [ngModel]="landRecordsMojani.isMojaniApproved" disabled />
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="!noSearchResultsSurvey">
           <div class="col-md-12">
             <div><label for="ownerAddress" class="control-label">Allottee Address</label></div>
             <input type="text" id="ownerAddress" class="form-control" name="address" [ngModel]="landRecordsMojani.ownerDetails.address" readonly/>
           </div>
+        </div>
+        <div class="form-group" *ngIf='noSearchResultsSurvey'>
+           <div class="col-md-12">
+            <p style='color:red;' align='center'><strong>No matching results found !</strong></p>
+           </div>
         </div>
       </div>
     </div>
@@ -108,7 +87,8 @@
           <th>From Owner Mobile No</th>
           <th>To Owner Name</th>
           <th>To Owner Aadhaar No</th>
-          <th>To Owner Mobile No</th>          
+          <th>To Owner Mobile No</th>   
+          <th>Is Kaveri Approved</th>       
       </tr>
   </thead>
   <tbody>
@@ -119,13 +99,14 @@
           <td>{{land.ownerDetails.mobileNo}}</td>
           <td>{{land.newOwnerDetails.newownerName}}</td>
           <td>{{land.newOwnerDetails.newaadharNo}}</td>
-          <td>{{land.newOwnerDetails.newmobileNo}}</td>         
+          <td>{{land.newOwnerDetails.newmobileNo}}</td>  
+          <td><input type="checkbox" name='kaveriApproval' [ngModel]='land.isKaveriApproved' disabled/></td>       
       </tr>
   </tbody>
  </table> 
  <div *ngIf='noSearchResults' style='color:red;' align='center'><strong>No matching results found !</strong></div>
  <div align="right">
-    <button class="btn btn-primary" (click)= "loadRegistrationForm()" [disabled]="noSearchResults && noSearchResultsSurvey">Transfer Ownership</button>
+    <button class="btn btn-primary" (click)= "loadRegistrationForm()" >Transfer Ownership</button>
  </div>
 </div>
 </ng-template> 
@@ -215,21 +196,18 @@
         </div>
       </div>
     </div>
-    <!-- <div class="panel panel-default">
+    <div class="panel panel-default">
       <div class="panel-heading">
-        <h1 class="panel-title">Land Sketch</h1>
+        <h1 class="panel-title">Pre Mutation Sketch</h1>
       </div>
       <div class="panel-body">
-        <div class="form-group">
-          <div class="col-md-4" [ngClass]="displayFieldCss('preMutationSketch')">
-            <label for="sketch" class="control-label required">Property Sketch</label>
-            <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept="image/*" id="sketch" formControlName="preMutationSketch">
-            <app-show-validation-error [displayError]="isFieldValid('preMutationSketch')" errorMsg="Premutation sketch is mandatory"></app-show-validation-error>
-          </div>
+        <div>
+        <div class="col-md-4" *ngIf="sketchURL!=null && sketchURL!=''">
+        <a [href]='sketchURL' target = '_blank'>View Sketch</a>
+        </div>
         </div>
       </div>
-    </div> -->
-
+    </div>
     <div class="panel panel-default">
       <div class="panel-heading">
         <h1 class="panel-title">Land Allottee Details</h1>

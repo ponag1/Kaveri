@@ -1,9 +1,25 @@
 var express = require('express');
 var router = express.Router();
 var Cloudant = require('@cloudant/cloudant');
-var cloudant = Cloudant(process.env.CLOUDANT_DB_URL);
+var vcapServices = require("vcap_services");
+var credentials = {};
+if(process.env.VCAP_SERVICES){ //for bluemix env
+	credentials = vcapServices.getCredentials('cloudantNoSQLDB', null, 'cloudant_land_records'); //get the cloudant_land_records service instance credentials
+	console.log("credentials",credentials);
+}
+var cloudantURL = process.env.CLOUDANT_DB_URL || credentials.url;
+var cloudant = Cloudant(cloudantURL);
 //connect to LOGIN DB for auth
-var logindb = cloudant.use(process.env.LOGIN_DB);
+var authdbName= process.env.LOGIN_DB || "authdata";
+
+cloudant.db.create(authdbName, function(err) {
+		if (err) {
+				console.log('Could not create new db: ' + authdbName+ ', it might already exist.');
+		}
+		
+});
+
+var logindb = cloudant.use(authdbName);
 
   //create index on login db if not existing
   var user = {name:'userId', type:'json', index:{fields:['userId']}};

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LandRecord } from '../models/LandRecord';
+import { LandRecord, Owner } from '../models/LandRecord';
 import {
   FormGroup,
   FormBuilder,
@@ -9,7 +9,6 @@ import {
 import { ManageLandRecordsService } from '../services/managelandrecords.service';
 import { ActivatedRoute, Params , Router} from '@angular/router'; 
 import 'rxjs/add/operator/switchMap'; 
-// import {FileUploadService} from '../services/file-upload.service';
 
 @Component({
   selector: 'app-registration-form',
@@ -24,11 +23,14 @@ export class RegistrationFormComponent implements OnInit {
   noSearchResultsSurvey : boolean = false;
   landRecord: LandRecord = new LandRecord(); //initialize land record object
   landRecords: LandRecord[];
-  landRecordsMojani: LandRecord;
+  landRecordsMojani: LandRecord = new LandRecord();
   layoutForm: FormGroup;
   lat :number;
   long : number; 
+  transferEnabled : boolean = false;
   formData: FormData = new FormData();
+  sketchURL: string;
+
   constructor(private formBuilder: FormBuilder, private manageLandRecordsService : ManageLandRecordsService, private router: Router,private route: ActivatedRoute) { }
  
   ngOnInit() {
@@ -56,7 +58,6 @@ export class RegistrationFormComponent implements OnInit {
       response => {
             console.log("res received from getLandRecords service" + JSON.stringify(response));
             if (response !=null) {
-              //  this.router.navigate(['/success', this.landRecord.pid]);
               this.landRecords = <LandRecord[]> response.landRecords;
              if(this.landRecords!=null && this.landRecords.length > 0){
                this.noSearchResults= false;
@@ -66,7 +67,16 @@ export class RegistrationFormComponent implements OnInit {
               this.fetchComplete = true; 
             }
           }); 
+    this.enableTransfer();
   }
+
+  enableTransfer(){
+    if(this.noSearchResultsSurvey==false && this.landRecordsMojani.isMojaniApproved==true){
+      this.transferEnabled=true;
+      if(this.noSearchResults==false && this.landRecords[0].isKaveriApproved==false)
+      this.transferEnabled=false;
+    }
+ }
 
   loadRegistrationForm(){
     this.template = "form2";
@@ -100,14 +110,14 @@ export class RegistrationFormComponent implements OnInit {
         address: [null]
       }),
       newOwnerDetails: this.formBuilder.group({
-        newownerName: [null],
-        newgender:[null],
-        newaadharNo: [null],
-        newmobileNo: [null],
-        newemailID:[null],
-        newaddress: [null]
+        newownerName: [null, [Validators.required, Validators.pattern('[a-zA-Z\\s]*')]],
+        newgender:[null, Validators.required],
+        newaadharNo: [null, [Validators.required, Validators.pattern('[0-9]{12}')]],
+        newmobileNo: [null, [Validators.required,Validators.pattern('[0-9]{10}')]],
+        newemailID:[null, [Validators.required,Validators.email]],
+        newaddress: [null, Validators.required]
       }),
-      saleRate :[null]
+      saleRate :[null, Validators.required]
     });
           if(this.noSearchResults==false){
           this.manageLandRecordsService.getLandRecordsKaveriByPid(this.pid)
@@ -116,9 +126,12 @@ export class RegistrationFormComponent implements OnInit {
               console.log("res received getLandRecordbyPid service" + JSON.stringify(response));
               if (response !=null && response.success) {
                 this.landRecord = <LandRecord> response.landRecords[0];
-                // this.landRecord.ownerDetails = JSON.parse(JSON.stringify(this.landRecord.newOwnerDetails));
-                // this.landRecord.newOwnerDetails = null;
+                this.landRecord.ownerDetails = <Owner> this.landRecord.newOwnerDetails;
+                this.landRecord.newOwnerDetails = <Owner> null;
                 console.log("landRecord object received:" + JSON.stringify(this.landRecord));
+                if(response.landRecords[0].sketchURL!=null && response.landRecords[0].sketchURL!=""){
+                  this.sketchURL = response.landRecords[0].sketchURL;
+                }
                 this.layoutForm.patchValue(this.landRecord);
                 this.setGeoCordinates();
               }
@@ -131,12 +144,15 @@ export class RegistrationFormComponent implements OnInit {
               if (response !=null && response.success) {
                 this.landRecord = <LandRecord> response.landRecords;
                 console.log("landRecord object received:" + this.landRecord);
+                if(response.sketchURL!=null && response.sketchURL!=""){
+                  this.sketchURL = response.sketchURL;
+                }
                 this.layoutForm.patchValue(this.landRecord);
                 this.setGeoCordinates();
               }
             }); 
-          }
-  } 
+          } 
+  }
 
   setGeoCordinates(){
     this.lat = parseFloat(this.layoutForm.get('geoData.latitude').value);
@@ -167,6 +183,7 @@ export class RegistrationFormComponent implements OnInit {
       this.landRecord.TimeStamp = new Date();
       this.landRecord.txnID = "TXN"+this.IDGenerator();
       this.landRecord.isKaveriApproved = false;
+      this.landRecord.sketchURL = this.sketchURL;
       console.log("pid generated: " + this.landRecord.pid);
       console.log("txn id: "+this.landRecord.txnID);
       console.log("landrecord: " + JSON.stringify(this.landRecord));
@@ -176,9 +193,6 @@ export class RegistrationFormComponent implements OnInit {
         response => {
           console.log("res received addLandRecord service" + JSON.stringify(response));
             if (response !=null && response.success) {
-            //Upload the files to server
-            // this.fileUploadService.uploadFiles(this.formData)
-            //     .subscribe(files => console.log('files uploaded :' + files));
               this.template = "form3";
             }
         });
@@ -213,6 +227,7 @@ export class RegistrationFormComponent implements OnInit {
     this.fetchComplete = false;
     this.template = "form1";
     this.pid=null;
+    this.transferEnabled = false;
   }
   back(){
     this.template = "form1";

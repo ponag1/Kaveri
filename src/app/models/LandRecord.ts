@@ -9,8 +9,10 @@ export class LandRecord {
   newOwnerDetails: Owner;
   preMutationSketch: string;
   TimeStamp: any;
-  isMojaniApproved : boolean;
+  isMojaniSubmitted : boolean;
+  isMojaniApproved :  boolean;
   isKaveriApproved: boolean;
+  sketchURL: string;
   constructor() { }
 
 }

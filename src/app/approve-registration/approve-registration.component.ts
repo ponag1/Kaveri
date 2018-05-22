@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { LandRecord } from '../models/LandRecord';
 import { ManageLandRecordsService } from '../services/managelandrecords.service';
 import { Observable } from 'rxjs';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl
+} from '@angular/forms';
 
 @Component({
   selector: 'app-approve-registration',
@@ -9,39 +15,21 @@ import { Observable } from 'rxjs';
   styleUrls: ['./approve-registration.component.css']
 })
 export class ApproveRegistrationComponent implements OnInit {
-  approveSuccess : boolean = false;
+  template : string = "form1";
   landRecords : LandRecord[];
+  landRecord : LandRecord = new LandRecord();
   approvedRecords : LandRecord[];
   wardNo : number;
   fetchComplete : boolean = false;
   noSearchResults : boolean = false;
-  viewRecord : boolean = false;
+  layoutForm: FormGroup;
+  lat :number;
+  long : number;
+  sketchURL : string;
 
-  constructor(private manageLandRecordsService : ManageLandRecordsService) { }
+  constructor(private formBuilder: FormBuilder, private manageLandRecordsService : ManageLandRecordsService) { }
 
   ngOnInit() {
-  }
-
-  onSubmit(){
-    console.log("ApplicationData" + JSON.stringify(this.landRecords));
-    this.approvedRecords =  this.landRecords.filter(
-    (rec) => rec.isKaveriApproved);
-    this.manageLandRecordsService.updateKaveriApprovedRecords(this.approvedRecords)
-    .subscribe(
-      response => {
-        console.log("res received updateLandrecordKaveri service" + JSON.stringify(response));
-        if (response !=null && response.success) {
-          //  this.router.navigate(['/success', this.landRecord.pid]);
-          this.approveSuccess = true; 
-        }   
-      });
-  }
-
-  submitNew(){
-        this.landRecords = [];
-        this.approveSuccess= false;
-        this.wardNo = null; 
-        this.fetchComplete = false;
   }
 
   search(){
@@ -60,10 +48,107 @@ export class ApproveRegistrationComponent implements OnInit {
              }
               this.fetchComplete = true;   
             }
-          });
+      });
   }
 
-  viewData(){
-    this.viewRecord = true;
+  viewData(txnID){
+    this.template = "form2";
+    this.loadForm(txnID);
+  }
+
+  loadForm(txnID) {
+    this.lat=null;
+    this.long = null;
+    this.layoutForm = this.formBuilder.group({
+      TimeStamp: [null],
+      pid: [''],
+      wardNo: [null],
+      areaCode: [null],
+      siteNo: [null],
+      geoData: this.formBuilder.group({
+        latitude: [null],
+        longitude: [null],
+        length: [null],
+        width: [null],
+        totalArea: '',
+        address: [null]
+      }),
+      preMutationSketch: [null],
+      ownerDetails: this.formBuilder.group({
+        ownerName: [null],
+        gender:[null],
+        aadharNo: [null],
+        mobileNo: [null],
+        emailID:[null],
+        address: [null]
+      }),
+      newOwnerDetails: this.formBuilder.group({
+        newownerName: [null],
+        newgender:[null],
+        newaadharNo: [null],
+        newmobileNo: [null],
+        newemailID:[null],
+        newaddress: [null]
+      }),
+      saleRate :[null]
+    });
+    console.log("Txn Id:"+txnID);
+    this.manageLandRecordsService.getLandRecordsKaveriBytxnId(txnID)
+      .subscribe(
+        response => {
+          console.log("res received getLandRecordbyTxnId service" + JSON.stringify(response));
+          if (response !=null && response.success) {
+            this.landRecord = <LandRecord> response.landRecords[0];
+            console.log("landRecord object received:" + JSON.stringify(this.landRecord));
+            // if(response.landRecords[0].sketchURL!=null && response.landRecords[0].sketchURL!=""){
+            //       this.sketchURL = response.landRecords[0].sketchURL;
+            //       this.landRecord.sketchURL = this.sketchURL;
+            // }
+            this.layoutForm.patchValue(this.landRecord);
+            this.setGeoCordinates();
+          }
+      });
+  }
+
+  setGeoCordinates(){
+    this.lat = parseFloat(this.layoutForm.get('geoData.latitude').value);
+    this.long =parseFloat( this.layoutForm.get('geoData.longitude').value);
+  } 
+
+  onSubmit(){
+    console.log("ApplicationData" + JSON.stringify(this.landRecords));
+    this.approvedRecords =  this.landRecords.filter(
+    (rec) => rec.isKaveriApproved);
+    this.manageLandRecordsService.updateKaveriApprovedRecords(this.approvedRecords)
+    .subscribe(
+      response => {
+        console.log("res received updateLandrecordKaveri service" + JSON.stringify(response));
+        if (response !=null && response.success) {
+          //  this.router.navigate(['/success', this.landRecord.pid]);
+         this.template = "form3";
+        }   
+      });
+  }
+
+  isFieldValid(field: string) {
+    return !this.layoutForm.get(field).valid && this.layoutForm.get(field).touched;
+  }
+
+  displayFieldCss(field: string) {
+    return {
+      'has-error': this.isFieldValid(field),
+      'has-feedback': this.isFieldValid(field)
+    };
+  }
+
+  submitNew(){
+        this.landRecords = [];
+        this.template = "form1";
+        this.wardNo = null; 
+        this.fetchComplete = false;
+  }
+
+  back(){
+    this.template = "form1";
   }
 }
