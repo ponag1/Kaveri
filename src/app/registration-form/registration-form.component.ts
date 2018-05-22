@@ -37,15 +37,20 @@ export class RegistrationFormComponent implements OnInit {
   }
   
   search(){
+    var responseRecMojani = false;
     console.log("PID :" + this.pid);
     this.manageLandRecordsService.getLandRecordsMojaniByPid(this.pid)
     .subscribe(
       response => {
         console.log("res received from mojanibypid" + JSON.stringify(response));
+        responseRecMojani = true;
         if(response !=null) {
           this.landRecordsMojani = <LandRecord> response.landRecords;
           if(this.landRecordsMojani!=null){
             this.noSearchResultsSurvey= false;
+            if(this.landRecordsMojani.isMojaniApproved==true)
+              this.transferEnabled=true;
+            else this.transferEnabled=false;
           }else{
             this.noSearchResultsSurvey = true;
           }
@@ -57,26 +62,21 @@ export class RegistrationFormComponent implements OnInit {
     .subscribe(
       response => {
             console.log("res received from getLandRecords service" + JSON.stringify(response));
+            
             if (response !=null) {
               this.landRecords = <LandRecord[]> response.landRecords;
              if(this.landRecords!=null && this.landRecords.length > 0){
                this.noSearchResults= false;
+               if(this.landRecords[0].isKaveriApproved==true)
+               this.transferEnabled=true;
+               else this.transferEnabled=false;               
              }else{
                this.noSearchResults = true;
              }
               this.fetchComplete = true; 
             }
-          }); 
-    this.enableTransfer();
-  }
-
-  enableTransfer(){
-    if(this.noSearchResultsSurvey==false && this.landRecordsMojani.isMojaniApproved==true){
-      this.transferEnabled=true;
-      if(this.noSearchResults==false && this.landRecords[0].isKaveriApproved==false)
-      this.transferEnabled=false;
-    }
- }
+        }); 
+    }     
 
   loadRegistrationForm(){
     this.template = "form2";
@@ -110,12 +110,12 @@ export class RegistrationFormComponent implements OnInit {
         address: [null]
       }),
       newOwnerDetails: this.formBuilder.group({
-        newownerName: [null, [Validators.required, Validators.pattern('[a-zA-Z\\s]*')]],
-        newgender:[null, Validators.required],
-        newaadharNo: [null, [Validators.required, Validators.pattern('[0-9]{12}')]],
-        newmobileNo: [null, [Validators.required,Validators.pattern('[0-9]{10}')]],
-        newemailID:[null, [Validators.required,Validators.email]],
-        newaddress: [null, Validators.required]
+        ownerName: [null, [Validators.required, Validators.pattern('[a-zA-Z\\s]*')]],
+        gender:[null, Validators.required],
+        aadharNo: [null, [Validators.required, Validators.pattern('[0-9]{12}')]],
+        mobileNo: [null, [Validators.required,Validators.pattern('[0-9]{10}')]],
+        emailID:[null, [Validators.required,Validators.email]],
+        address: [null, Validators.required]
       }),
       saleRate :[null, Validators.required]
     });
@@ -127,7 +127,7 @@ export class RegistrationFormComponent implements OnInit {
               if (response !=null && response.success) {
                 this.landRecord = <LandRecord> response.landRecords[0];
                 this.landRecord.ownerDetails = <Owner> this.landRecord.newOwnerDetails;
-                this.landRecord.newOwnerDetails = <Owner> null;
+                this.landRecord.newOwnerDetails = <Owner> new Owner();
                 console.log("landRecord object received:" + JSON.stringify(this.landRecord));
                 if(response.landRecords[0].sketchURL!=null && response.landRecords[0].sketchURL!=""){
                   this.sketchURL = response.landRecords[0].sketchURL;

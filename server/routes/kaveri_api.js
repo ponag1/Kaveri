@@ -66,8 +66,7 @@ router.post('/api/addLandRecordKaveri', (req, res) => {
   console.log('Inside Express api to add new land record kaveri');
   console.log("Received txnid: " + req.body.txnid);
   var record = req.body;
-  var id = req.body.txnID;
-    kaveri.insert(record, id, function(err, doc) {
+    kaveri.insert(record, function(err, doc) {
         if (err) {
             console.log("Error saving record to kaveri" +err);
             res.json({success:false, message: err.toString()});
@@ -90,12 +89,16 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
 		console.log("Error finding documents");
 	  }
 	  console.log('Found documents with Txn ID '+ records[0].txnID +":"+ result.docs.length);
-	  for (var i = 0; i < result.docs.length; i++) {
-		console.log('Doc id:'+ result.docs[i].id);
-		records[i]["_id"] = result.docs[i]["_id"];
-		records[i]["_rev"] = result.docs[i]["_rev"];
-        documentIdsAdded.push(result.docs[i].pid);
+		for (var i = 0; i < records.length; i++) {
+			for(var j=0; j < result.docs.length; j++){
+			console.log('Doc id:'+ result.docs[i].id);
+			if(records[i].txnID == result.docs[j].txnID){
+				records[i]["_id"] = result.docs[j]["_id"];
+				records[i]["_rev"] = result.docs[j]["_rev"];
+        documentIdsAdded.push(result.docs[i].txnID);
+			}
 		}
+	}
 		  kaveri.bulk({docs : records}, function(err, doc) {
 					if (err) {
 						console.log("Error updating records to Kaveri" +err);
@@ -138,7 +141,7 @@ router.get('/api/getLandRecordsKaveriByPid/:id', (req, res) => {
 	});
 });
 
-/* GET API to get land records from Kaveri using PID*/
+/* GET API to get land records from Kaveri using TXNID*/
 router.get('/api/getLandRecordsKaveriBytxnId/:id', (req, res) => {
   console.log('Inside Express api to get land records by Txn id');
   kaveri.find({selector:{txnID:String(req.params.id)}}, function(er, result) {

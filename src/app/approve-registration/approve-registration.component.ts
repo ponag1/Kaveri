@@ -40,7 +40,7 @@ export class ApproveRegistrationComponent implements OnInit {
             console.log("res received from getLandRecords service" + JSON.stringify(response));
             if (response !=null) {
               //  this.router.navigate(['/success', this.landRecord.pid]);
-              this.landRecords = <LandRecord[]> response.landRecords;
+              this.landRecords = <LandRecord[]> response.landRecords.filter(kaveriRec => !kaveriRec.isKaveriApproved);
              if(this.landRecords!=null && this.landRecords.length > 0){
                this.noSearchResults= false;
              }else{
@@ -83,12 +83,12 @@ export class ApproveRegistrationComponent implements OnInit {
         address: [null]
       }),
       newOwnerDetails: this.formBuilder.group({
-        newownerName: [null],
-        newgender:[null],
-        newaadharNo: [null],
-        newmobileNo: [null],
-        newemailID:[null],
-        newaddress: [null]
+        ownerName: [null],
+        gender:[null],
+        aadharNo: [null],
+        mobileNo: [null],
+        emailID:[null],
+        address: [null]
       }),
       saleRate :[null]
     });
@@ -100,10 +100,10 @@ export class ApproveRegistrationComponent implements OnInit {
           if (response !=null && response.success) {
             this.landRecord = <LandRecord> response.landRecords[0];
             console.log("landRecord object received:" + JSON.stringify(this.landRecord));
-            // if(response.landRecords[0].sketchURL!=null && response.landRecords[0].sketchURL!=""){
-            //       this.sketchURL = response.landRecords[0].sketchURL;
-            //       this.landRecord.sketchURL = this.sketchURL;
-            // }
+            if(this.landRecord.sketchURL!=null && this.landRecord.sketchURL!=""){
+                  this.sketchURL = this.landRecord.sketchURL;
+            }
+            console.log("sketch URL:"+this.sketchURL);
             this.layoutForm.patchValue(this.landRecord);
             this.setGeoCordinates();
           }

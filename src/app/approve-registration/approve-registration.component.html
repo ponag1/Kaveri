@@ -1,5 +1,5 @@
-<div  align="center">
-  <h3>KAVERI- Approve registration Applications</h3>
+<div  align="center"  [ngStyle]="{'background-color':'#87b3d9','height':'40px'}">
+  <h3 [ngStyle]="{'color':'#fff'}">KAVERI- Approve registration Applications</h3>
 </div>
 <div align="right"><app-logout></app-logout></div>
  <div *ngIf="template==='form1';then approveForm1 else approveForm2" ></div>
@@ -22,7 +22,7 @@
     </div>
 <!--Search results of the land records for approval -->
 <div *ngIf= "fetchComplete" >
-<table class="table table-striped">
+<table class="table table-striped table-hover">
   <thead>
       <tr>
           <th>Transaction ID</th>
@@ -209,47 +209,47 @@
       <div class="panel-body">
         <div formGroupName="newOwnerDetails">
           <div class="form-group">
-            <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.newownerName')">
+            <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.ownerName')">
               <label for="newownerName" class="control-label required">Allottee Name</label>
-              <input type="text" class="form-control" id="newownerName" formControlName="newownerName">
-              <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.newownerName')" errorMsg="Property allotee Name is mandatory"></app-show-validation-error>
+              <input type="text" class="form-control" id="newownerName" formControlName="ownerName">
+              <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.ownerName')" errorMsg="Property allotee Name is mandatory"></app-show-validation-error>
             </div>
 
-            <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.newaadharNo')">
+            <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.aadharNo')">
               <label for="newaadharNo" class="control-label required">Aadhar #</label>
-              <input type="text" id="newaadharNo" class="form-control" formControlName="newaadharNo" />
-              <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.newaadharNo')" errorMsg="Aadhar # is mandatory"></app-show-validation-error>
+              <input type="text" id="newaadharNo" class="form-control" formControlName="aadharNo" />
+              <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.aadharNo')" errorMsg="Aadhar # is mandatory"></app-show-validation-error>
             </div>
 
-            <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.newgender')">
+            <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.gender')">
              <div> <label class="control-label required">Gender</label></div>
               <label class="md-check radio-inline">
-                <input type="radio" value="M" name="newgender" formControlName="newgender">Male
+                <input type="radio" value="M" name="gender" formControlName="gender">Male
               </label>
               <label class="md-check radio-inline">
-                <input type="radio" value="F" name="newgender" formControlName="newgender">Female
+                <input type="radio" value="F" name="gender" formControlName="gender">Female
               </label>
-              <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.newgender')" errorMsg="Gender is mandatory"></app-show-validation-error>
+              <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.gender')" errorMsg="Gender is mandatory"></app-show-validation-error>
             </div>
 
               </div>
               <div class="form-group">
-                <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.newmobileNo')">
+                <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.mobileNo')">
                   <label for="newmobileNo" class="control-label required">Mobile</label>
-                  <input type="text" id="newmobileNo" class="form-control" formControlName="newmobileNo" />
-                  <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.newmobileNo')" errorMsg="Mobile number is mandatory"></app-show-validation-error>
+                  <input type="text" id="newmobileNo" class="form-control" formControlName="mobileNo" />
+                  <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.mobileNo')" errorMsg="Mobile number is mandatory"></app-show-validation-error>
                 </div>
-                <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.newemailID')">
+                <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.emailID')">
                   <label for="newemailID" class="control-label required">Email ID</label>
-                  <input type="text" id="newemailID" class="form-control" formControlName="newemailID" />
-                  <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.newemailID')" errorMsg="Email ID is mandatory"></app-show-validation-error>
+                  <input type="text" id="newemailID" class="form-control" formControlName="emailID" />
+                  <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.emailID')" errorMsg="Email ID is mandatory"></app-show-validation-error>
                 </div>
               </div>
               <div class="form-group">
-                <div class="col-md-12" [ngClass]="displayFieldCss('newOwnerDetails.newaddress')">
+                <div class="col-md-12" [ngClass]="displayFieldCss('newOwnerDetails.address')">
                   <label for="newownerAddress" class="control-label required">Allottee Address</label>
-                  <input type="text" id="newownerAddress" class="form-control" formControlName="newaddress" />
-                  <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.newaddress')" errorMsg="Allotee address is mandatory"></app-show-validation-error>
+                  <input type="text" id="newownerAddress" class="form-control" formControlName="address" />
+                  <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.address')" errorMsg="Allotee address is mandatory"></app-show-validation-error>
                 </div>
               </div>
             </div>
@@ -281,9 +281,9 @@
 <!--Success message for the approval-->
 <ng-template #applicationSuccess >
 <div class="alert alert-success"> <strong>Success!</strong>
-All the below approved records have been committed to the HyperLedger. Their unique digital Ids are listed below :
+All the below approved records have been committed to the HyperLedger. Their unique Transaction Ids are listed below :
 <ul *ngFor= "let rec of approvedRecords">
-  <li>{{rec.pid}}</li>
+  <li>{{rec.txnID}}</li>
 </ul>
 </div>
   <div class="alert alert-info">
