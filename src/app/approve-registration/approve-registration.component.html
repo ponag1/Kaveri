@@ -11,7 +11,7 @@
   <div class="panel-body">
     <div class="form-group">
       <div class="col-md-4">
-        <label for="wardNo" class="control-label required">Ward #</label>
+        <label for="wardNo" class="control-label required">Ward #</label><span style="color: red;font-size: 20px;">*</span>
         <input type="text" id="wardNo" name="wardNo"  [(ngModel)]="wardNo"  />
       </div>
       <div class="col-md-4">
@@ -170,10 +170,10 @@
             <div class="col-md-4" [ngClass]="displayFieldCss('ownerDetails.gender')">
              <div> <label class="control-label required">Gender</label></div>
               <label class="md-check radio-inline">
-                <input type="radio" value="M" name="gender" formControlName="gender">Male
+                <input type="radio" value="M" formControlName="gender">Male
               </label>
               <label class="md-check radio-inline">
-                <input type="radio" value="F" name="gender" formControlName="gender">Female
+                <input type="radio" value="F" formControlName="gender">Female
               </label>
               <app-show-validation-error [displayError]="isFieldValid('ownerDetails.gender')" errorMsg="Gender is mandatory"></app-show-validation-error>
             </div>
@@ -224,10 +224,10 @@
             <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.gender')">
              <div> <label class="control-label required">Gender</label></div>
               <label class="md-check radio-inline">
-                <input type="radio" value="M" name="gender" formControlName="gender">Male
+                <input type="radio" value="M" formControlName="gender">Male
               </label>
               <label class="md-check radio-inline">
-                <input type="radio" value="F" name="gender" formControlName="gender">Female
+                <input type="radio" value="F" formControlName="gender">Female
               </label>
               <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.gender')" errorMsg="Gender is mandatory"></app-show-validation-error>
             </div>

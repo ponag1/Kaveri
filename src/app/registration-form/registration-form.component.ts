@@ -37,13 +37,11 @@ export class RegistrationFormComponent implements OnInit {
   }
   
   search(){
-    var responseRecMojani = false;
     console.log("PID :" + this.pid);
     this.manageLandRecordsService.getLandRecordsMojaniByPid(this.pid)
     .subscribe(
       response => {
         console.log("res received from mojanibypid" + JSON.stringify(response));
-        responseRecMojani = true;
         if(response !=null) {
           this.landRecordsMojani = <LandRecord> response.landRecords;
           if(this.landRecordsMojani!=null){
@@ -53,6 +51,7 @@ export class RegistrationFormComponent implements OnInit {
             else this.transferEnabled=false;
           }else{
             this.noSearchResultsSurvey = true;
+            this.transferEnabled=false;
           }
           console.log("search result survey"+this.noSearchResultsSurvey);
         }
@@ -62,7 +61,6 @@ export class RegistrationFormComponent implements OnInit {
     .subscribe(
       response => {
             console.log("res received from getLandRecords service" + JSON.stringify(response));
-            
             if (response !=null) {
               this.landRecords = <LandRecord[]> response.landRecords;
              if(this.landRecords!=null && this.landRecords.length > 0){
@@ -125,7 +123,7 @@ export class RegistrationFormComponent implements OnInit {
             response => {
               console.log("res received getLandRecordbyPid service" + JSON.stringify(response));
               if (response !=null && response.success) {
-                this.landRecord = <LandRecord> response.landRecords[0];
+                this.landRecord = <LandRecord> response.landRecords[response.landRecords.length-1];
                 this.landRecord.ownerDetails = <Owner> this.landRecord.newOwnerDetails;
                 this.landRecord.newOwnerDetails = <Owner> new Owner();
                 console.log("landRecord object received:" + JSON.stringify(this.landRecord));
@@ -180,7 +178,7 @@ export class RegistrationFormComponent implements OnInit {
       console.log('form valid success');
       //sync the form model with the data model
       this.landRecord = <LandRecord>this.layoutForm.value;
-      this.landRecord.TimeStamp = new Date();
+      this.landRecord.TimeStamp = new Date().getTime();
       this.landRecord.txnID = "TXN"+this.IDGenerator();
       this.landRecord.isKaveriApproved = false;
       this.landRecord.sketchURL = this.sketchURL;

@@ -52,8 +52,8 @@ var kaveri = cloudant.use(kaveriDBName);
  });
 
  //Create index in db on timestamp if not existing
- var timeStamp= {name:'TimeStamp', type:'json', index:{fields:['TimeStamp']}};
- kaveri.index(timeStamp, function(er, response){
+ var TimeStamp= {name:'TimeStamp', type:'json', index:{fields:['TimeStamp']}};
+ kaveri.index(TimeStamp, function(er, response){
     if (er) {
 		console.log("Error creating index on TimeStamp:"+ er);
     }else{
@@ -131,7 +131,7 @@ router.get('/api/getLandRecordsKaveriByWard/:id', (req, res) => {
 /* GET API to get land records from Kaveri using PID*/
 router.get('/api/getLandRecordsKaveriByPid/:id', (req, res) => {
   console.log('Inside Express api to get land records by Pid');
-  kaveri.find({selector:{pid:Number(req.params.id)}}, function(er, result) {
+  kaveri.find({selector:{pid:Number(req.params.id)},sort:[{TimeStamp:"desc"}]}, function(er, result) {
 	  if (er) {
 		console.log("Error finding documents");
 		res.json({success : false,message:"Error finding documents",landRecords:null});

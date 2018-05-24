@@ -11,7 +11,7 @@
   <div class="panel-body">
     <div class="form-group">
       <div class="col-md-3">
-        <label for="pid" class="control-label required">PID</label>
+        <label for="pid" class="control-label required">PID</label><span style="color: red;font-size: 20px;">*</span>
         <input type="text" id="pid" name="pid"  [(ngModel)]="pid"  />
       </div>
       <div class="col-md-3">
@@ -230,10 +230,10 @@
             <div class="col-md-4" [ngClass]="displayFieldCss('ownerDetails.gender')">
              <div> <label class="control-label required">Gender</label></div>
               <label class="md-check radio-inline">
-                <input type="radio" value="M" name="gender" formControlName="gender">Male
+                <input type="radio" value="M" formControlName="gender">Male
               </label>
               <label class="md-check radio-inline">
-                <input type="radio" value="F" name="gender" formControlName="gender">Female
+                <input type="radio" value="F" formControlName="gender">Female
               </label>
               <app-show-validation-error [displayError]="isFieldValid('ownerDetails.gender')" errorMsg="Gender is mandatory"></app-show-validation-error>
             </div>
@@ -272,24 +272,24 @@
         <div formGroupName="newOwnerDetails">
           <div class="form-group">
             <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.ownerName')">
-              <label for="newownerName" class="control-label required">Allottee Name</label>
+              <label for="newownerName" class="control-label required">Allottee Name</label><span style="color: red;font-size: 20px;">*</span>
               <input type="text" class="form-control" id="newownerName" formControlName="ownerName">
               <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.ownerName')" errorMsg="Property allotee Name is mandatory"></app-show-validation-error>
             </div>
 
             <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.aadharNo')">
-              <label for="newaadharNo" class="control-label required">Aadhar #</label>
+              <label for="newaadharNo" class="control-label required">Aadhar #</label><span style="color: red;font-size: 20px;">*</span>
               <input type="text" id="newaadharNo" class="form-control" formControlName="aadharNo" />
               <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.aadharNo')" errorMsg="Aadhar # is mandatory"></app-show-validation-error>
             </div>
 
             <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.gender')">
-             <div> <label class="control-label required">Gender</label></div>
+             <div> <label class="control-label required">Gender</label><span style="color: red;font-size: 20px;">*</span></div>
               <label class="md-check radio-inline">
-                <input type="radio" value="M" name="gender" formControlName="gender">Male
+                <input type="radio" value="M" formControlName="gender">Male
               </label>
               <label class="md-check radio-inline">
-                <input type="radio" value="F" name="gender" formControlName="gender">Female
+                <input type="radio" value="F" formControlName="gender">Female
               </label>
               <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.gender')" errorMsg="Gender is mandatory"></app-show-validation-error>
             </div>
@@ -297,19 +297,19 @@
               </div>
               <div class="form-group">
                 <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.mobileNo')">
-                  <label for="newmobileNo" class="control-label required">Mobile</label>
+                  <label for="newmobileNo" class="control-label required">Mobile</label><span style="color: red;font-size: 20px;">*</span>
                   <input type="text" id="newmobileNo" class="form-control" formControlName="mobileNo" />
                   <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.mobileNo')" errorMsg="Mobile number is mandatory"></app-show-validation-error>
                 </div>
                 <div class="col-md-4" [ngClass]="displayFieldCss('newOwnerDetails.emailID')">
-                  <label for="newemailID" class="control-label required">Email ID</label>
+                  <label for="newemailID" class="control-label required">Email ID</label><span style="color: red;font-size: 20px;">*</span>
                   <input type="text" id="newemailID" class="form-control" formControlName="emailID" />
                   <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.emailID')" errorMsg="Email ID is mandatory"></app-show-validation-error>
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-md-12" [ngClass]="displayFieldCss('newOwnerDetails.address')">
-                  <label for="newownerAddress" class="control-label required">Allottee Address</label>
+                  <label for="newownerAddress" class="control-label required">Allottee Address</label><span style="color: red;font-size: 20px;">*</span>
                   <input type="text" id="newownerAddress" class="form-control" formControlName="address" />
                   <app-show-validation-error [displayError]="isFieldValid('newOwnerDetails.address')" errorMsg="Allotee address is mandatory"></app-show-validation-error>
                 </div>
@@ -325,7 +325,7 @@
       <div class="panel-body">
       <div class="form-group">
         <div class="col-md-4" [ngClass]="displayFieldCss('saleRate')">
-          <label for="saleRate" class="control-label required">Sale Rate</label>
+          <label for="saleRate" class="control-label required">Sale Rate</label><span style="color: red;font-size: 20px;">*</span>
           <input type="text" id="saleRate" class="form-control" formControlName="saleRate" />
           <app-show-validation-error [displayError]="isFieldValid('saleRate')" errorMsg="Sale Rate is mandatory"></app-show-validation-error>
         </div>
