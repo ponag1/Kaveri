@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var requestify = require('requestify');
 var vcapServices = require("vcap_services");
 var Cloudant = require('@cloudant/cloudant');
 var credentials = {};
@@ -95,7 +96,43 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
 			if(records[i].txnID == result.docs[j].txnID){
 				records[i]["_id"] = result.docs[j]["_id"];
 				records[i]["_rev"] = result.docs[j]["_rev"];
-        documentIdsAdded.push(result.docs[i].txnID);
+				documentIdsAdded.push(result.docs[i].txnID);
+				//POST CALL TO BLOCKCHAIN	
+				requestify.request('http://13.232.73.187:3000/api/org.bhoomi.landrecords.Owner', {
+					method: 'POST',
+					body: {
+					  $class : "org.bhoomi.landrecords.Owner",
+					  aadharNo : records[i].newOwnerDetails.aadharNo,
+					  ownerName : records[i].newOwnerDetails.ownerName,
+					  gender : records[i].newOwnerDetails.gender,
+					  mobileNo : records[i].newOwnerDetails.mobileNo,
+					  emailID : records[i].newOwnerDetails.emailID,
+					  address : records[i].newOwnerDetails.address
+					},
+					dataType: 'json'		
+				})
+				.then(function(response) {
+					// get the response body
+					console.log(response.getBody());
+					// get the code
+					response.getCode();
+					}); 
+					
+				requestify.request('http://13.232.73.187:3000/api/org.bhoomi.landrecords.UpdateAsset', {
+					method: 'POST',
+					body: {
+					  $class : "org.bhoomi.landrecords.UpdateAsset",
+					  landrecord : "resource:org.bhoomi.landrecords.LandRecord#"+records[i].pid,
+					  newOwner : "resource:org.bhoomi.landrecords.Owner#"+records[i].newOwnerDetails.aadharNo
+					},
+					dataType: 'json'		
+				})
+				.then(function(response) {
+					// get the response body
+					console.log(response.getBody());
+					// get the code
+					response.getCode();
+					});
 			}
 		}
 	}
