@@ -95,34 +95,10 @@ router.get('/api/getLandRecordsMojaniByPid/:id', (req, res) => {
 
 		}
 			res.json({success : true, message:"Found "+result.docs.length+" documents", landRecords: landRecordData, sketchURL : sketchURL});
-		);
+		});
 	});
-	};
+		
 	
- 
-	
-	/*
-	
-  	mojani.find({selector:{pid:Number(req.params.id)}}, function(er, result) {
-			if (er) {
-			console.log("Error finding documents");
-			res.json({success : false,message:"Error finding documents: "+er,landRecords:null});
-			}
-	  console.log('Found documents with PID count:'+ req.params.id +":"+ result.docs.length);
- 
-	  if(result.docs.length > 0){
-			console.log('Found documents with PID count:'+ req.params.id +":"+ result.docs.length);
-			let doc = result.docs[0];
-			let attachmentName;
-			if(doc['_attachments'] !=null){
-				attachmentName = Object.keys(doc['_attachments'])[0];
-				sketchURL= cloudant_url + "/" + mojaniDBName + "/" + doc["_id"]+ "/" + attachmentName;
-			}
-			res.json({success : true, message:"Found "+result.docs.length+" documents", landRecords: doc, sketchURL : sketchURL});
-		}
-		else
-			res.json({success : true, message:"No documents found", landRecords:null});
-		}); */
 	}else {
 		res.json({success : false, message:"PID sent null in request", landRecords:null});
 	}
