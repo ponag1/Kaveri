@@ -38,7 +38,8 @@
     "npm": "^6.0.1",
     "rxjs": "^5.0.1",
     "vcap_services": "^0.3.4",
-    "zone.js": "^0.8.4"
+    "zone.js": "^0.8.4",
+    "requestify": "0.2.5"
   },
   "devDependencies": {
     "@angular/cli": "^1.7.4",
