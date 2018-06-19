@@ -39,6 +39,8 @@ router.get('/api/getLandRecordsMojaniByPid/:id', (req, res) => {
 	if(!isNaN(req.params.id)){
 		requestify.get('http://13.232.73.187:3000/api/org.bhoomi.landrecords.LandRecord/'+req.params.id).then(function(blockResponse) {
 			if(blockResponse.code==200){
+        console.log("Response code IF:"+blockResponse.code);
+        console.log("Inside IF");
 				mojani.find({selector:{pid:Number(req.params.id)}}, function(er, result) {
 				if (er) {
 				console.log("Error finding documents");
@@ -60,6 +62,8 @@ router.get('/api/getLandRecordsMojaniByPid/:id', (req, res) => {
 					res.json({success : true, message:"No documents found", landRecords:null});
 				});
 			}else{
+        console.log("Response code ELSE:"+blockResponse.code);
+        console.log("Inside ELSE");
 				res.json({success : false, message:"PID sent null in request", landRecords:null});
 			}
 		});
