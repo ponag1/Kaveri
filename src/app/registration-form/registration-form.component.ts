@@ -185,6 +185,7 @@ export class RegistrationFormComponent implements OnInit {
       console.log('form valid success');
       //sync the form model with the data model
       this.landRecord = <LandRecord>this.layoutForm.value;
+      this.landRecord.pid = Number(this.landRecord.pid);
       this.landRecord.TimeStamp = new Date().getTime();
       this.landRecord.txnID = "TXN"+this.IDGenerator();
       this.landRecord.isKaveriApproved = false;
