@@ -38,15 +38,18 @@ console.log('Inside Express api to get land records by Pid');
 var land_details;
 var owner_details;
 var owner;
-var landRecordData;
+var landRecordData = null;
 if(!isNaN(req.params.id)){
-	requestify.get('http://13.232.73.187:3000/api/org.bhoomi.landrecords.LandRecord/'+req.params.id).then(function(landResponse) {
-		land_details = landResponse.getBody();
+	requestify.get('http://13.232.73.187:3000/api/org.bhoomi.landrecords.LandRecord/'+req.params.id).then(function(response) {
+		land_details = response.getBody();
 		owner = land_details.owner;
 		owner = owner.split("#")[1];
 		console.log("Land details bC: "+JSON.stringify(land_details));
-			requestify.get('http://13.232.73.187:3000/api/org.bhoomi.landrecords.Owner/'+owner).then(function(ownerResponse) {
-			owner_details = ownerResponse.getBody();       
+			requestify.get('http://13.232.73.187:3000/api/org.bhoomi.landrecords.Owner/'+owner).then(function(response) {
+			owner_details = response.getBody();   
+			var tempPid = +land_details.pid ;
+			land_details.pid = tempPid;   
+			console.log("TempPID: "+tempPid);
 			landRecordData = {
 				pid : land_details.pid,
 				wardNo : land_details.wardNo,
@@ -73,15 +76,15 @@ if(!isNaN(req.params.id)){
 					address : owner_details.address
 				}
 			}
-			console.log("Land Record Blockchain: "+landRecordData);
+			console.log("Land Record Blockchain fetch pid: "+landRecordData);
 			mojani.find({selector:{pid:Number(req.params.id)}}, function(er, result) {
 				if (er) {
-					console.log("Error finding documents");
+					console.log("Error finding documentsin mojani");
 					res.json({success : false,message:"Error finding documents: "+er,landRecords:null});
 				}
-				console.log('Found documents with PID count:'+ req.params.id +":"+ result.docs.length);
+				console.log('Found documents with PID count mojani:'+ req.params.id +":"+ result.docs.length);
 				if(result.docs.length > 0){
-					console.log('Found documents with PID count:'+ req.params.id +":"+ result.docs.length);
+					console.log('Found documents with PID count mojani:'+ req.params.id +":"+ result.docs.length);
 					let doc = result.docs[0];
 					let attachmentName;
 					if(doc['_attachments'] !=null){
@@ -93,7 +96,13 @@ if(!isNaN(req.params.id)){
 				else
 					res.json({success : true, message:"No documents found", landRecords:null});
 			});
+		})
+		.fail(function(response){
+			res.json({success : false, message:"PID sent null in request", landRecords:null});
 		});
+	})
+	.fail(function(response){
+		res.json({success : false, message:"PID sent null in request", landRecords:null});
 	});          
 }else {
 	res.json({success : false, message:"PID sent null in request", landRecords:null});
