@@ -81,72 +81,96 @@ router.post('/api/addLandRecordKaveri', (req, res) => {
 
 /* POST API to update approved records in kaveri*/
 router.post('/api/updateKaveriApprovedRecords', (req, res) => {
-  console.log('Inside Express api to update new land record');
-  var records = req.body; //Array of land records
-  console.log("list of documents" + JSON.stringify(records));
-  var documentIdsAdded = [];
-  kaveri.find({selector:{txnID:records[0].txnID}}, function(er, result) {
-	  if (er) {
-		console.log("Error finding documents");
-	  }
-	  console.log('Found documents with Txn ID '+ records[0].txnID +":"+ result.docs.length);
-		for (var i = 0; i < records.length; i++) {
-			for(var j=0; j < result.docs.length; j++){
-			console.log('Doc id:'+ result.docs[i].id);
-			if(records[i].txnID == result.docs[j].txnID){
-				records[i]["_id"] = result.docs[j]["_id"];
-				records[i]["_rev"] = result.docs[j]["_rev"];
-				documentIdsAdded.push(result.docs[i].txnID);
-				//POST CALL TO BLOCKCHAIN	
-				requestify.request('http://13.232.73.187:3000/api/org.bhoomi.landrecords.Owner', {
-					method: 'POST',
-					body: {
-					  $class : "org.bhoomi.landrecords.Owner",
-					  aadharNo : records[i].newOwnerDetails.aadharNo,
-					  ownerName : records[i].newOwnerDetails.ownerName,
-					  gender : records[i].newOwnerDetails.gender,
-					  mobileNo : records[i].newOwnerDetails.mobileNo,
-					  emailID : records[i].newOwnerDetails.emailID,
-					  address : records[i].newOwnerDetails.address
-					},
-					dataType: 'json'		
-				})
-				.then(function(response) {
-					// get the response body
-					console.log(response.getBody());
-					// get the code
-					response.getCode();
-					}); 
+    console.log('Inside Express api to update new land record');
+    var records = req.body; //Array of land records
+    console.log("list of documents" + JSON.stringify(records));
+    var documentIdsAdded = [];
+    kaveri.find({
+        selector: {
+            txnID: records[0].txnID
+        }
+    }, function(er, result) {
+        if (er) {
+            console.log("Error finding documents");
+        }
+        console.log('Found documents with Txn ID ' + records[0].txnID + ":" + result.docs.length);
+        for (var i = 0; i < records.length; i++) {
+            for (var j = 0; j < result.docs.length; j++) {
+                console.log('Doc id:' + result.docs[i].id);
+                if (records[i].txnID == result.docs[j].txnID) {
+                    var tempPID = records[i].pid.toString();
+                    records[i].pid = tempPID;
+                    records[i]["_id"] = result.docs[j]["_id"];
+                    records[i]["_rev"] = result.docs[j]["_rev"];
+                    documentIdsAdded.push(result.docs[i].txnID);
+					console.log('calling block chain code');    
+					// New Owner Details
+					var ownerReq = {
+           "$class": "org.bhoomi.landrecords.AddOwner",
+           "owner" : {
+              "$class": "org.bhoomi.landrecords.Owner",
+              "aadharNo": result.docs[j].newOwnerDetails.aadharNo+"",
+              "ownerName": result.docs[j].newOwnerDetails.ownerName+"",
+              "gender": result.docs[j].newOwnerDetails.gender+"",
+              "mobileNo": result.docs[j].newOwnerDetails.mobileNo+"",
+              "emailID": result.docs[j].newOwnerDetails.emailID+"",
+              "address": result.docs[j].newOwnerDetails.address+""    
+						}
+					}
 					
-				requestify.request('http://13.232.73.187:3000/api/org.bhoomi.landrecords.UpdateAsset', {
-					method: 'POST',
-					body: {
-					  $class : "org.bhoomi.landrecords.UpdateAsset",
-					  landrecord : "resource:org.bhoomi.landrecords.LandRecord#"+records[i].pid,
-					  newOwner : "resource:org.bhoomi.landrecords.Owner#"+records[i].newOwnerDetails.aadharNo
-					},
-					dataType: 'json'		
-				})
-				.then(function(response) {
-					// get the response body
-					console.log(response.getBody());
-					// get the code
-					response.getCode();
-					});
-			}
-		}
-	}
-		  kaveri.bulk({docs : records}, function(err, doc) {
-					if (err) {
-						console.log("Error updating records to Kaveri" +err);
-						res.json({success : false, message : err+""});
-					} else{
-						console.log("success saving records to Kaveri");
-				       res.json({success : true, documentIdsAdded : documentIdsAdded});
-					}				
-				});	
+					//Land Record Updation
+					var landUpdateReq = {
+					  "$class": "org.bhoomi.landrecords.UpdateAsset",
+					  "landrecord": "resource:org.bhoomi.landrecords.LandRecord#"+result.docs[j].pid+"",
+					  "newOwner": "resource:org.bhoomi.landrecords.Owner#"+result.docs[j].newOwnerDetails.aadharNo+""
+					}
 
-	}); 
+          //POST CALL TO BLOCKCHAIN
+          requestify.request('http://13.232.73.187:3000/api/org.bhoomi.landrecords.AddOwner', {
+          method: 'POST',
+          body: ownerReq,
+          dataType: 'json'
+					})
+					.then(function(response) {
+						// get the response body
+						console.log(response.getBody());													
+							requestify.request('http://13.232.73.187:3000/api/org.bhoomi.landrecords.UpdateAsset', {
+								method: 'POST',
+								body: landUpdateReq,
+								dataType: 'json'
+							})
+							.then(function(response) {
+								// get the response body
+								console.log(response.getBody());
+							})
+							.fail(function(response) {
+								console.log("Error occured while updating Owner to Land record");
+							});
+					})
+					.fail(function(response) {
+						console.log("Error occured while creating new Owner");
+					});                                                       
+                }
+            }
+        }
+        kaveri.bulk({
+            docs: records
+        }, function(err, doc) {
+            if (err) {
+                console.log("Error updating records to Kaveri" + err);
+                res.json({
+                    success: false,
+                    message: err + ""
+                });
+            } else {
+                console.log("success saving records to Kaveri");
+                res.json({
+                    success: true,
+                    documentIdsAdded: documentIdsAdded
+                });
+            }
+        });
+    });
 });
 
 /* GET API to get land records from MOJANI using ward No*/
