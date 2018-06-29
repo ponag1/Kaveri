@@ -11,7 +11,7 @@ table{
     border: 1px solid #bce8f1;
     border-radius: 4px;
 }
-tr{
+thead{
     background-color: #d9edf7;
     color: #31708f;
 }
