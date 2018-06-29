@@ -106,48 +106,48 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
 					console.log('calling block chain code');    
 					// New Owner Details
 					var ownerReq = {
-           "$class": "org.bhoomi.landrecords.AddOwner",
-           "owner" : {
-              "$class": "org.bhoomi.landrecords.Owner",
-              "aadharNo": result.docs[j].newOwnerDetails.aadharNo+"",
-              "ownerName": result.docs[j].newOwnerDetails.ownerName+"",
-              "gender": result.docs[j].newOwnerDetails.gender+"",
-              "mobileNo": result.docs[j].newOwnerDetails.mobileNo+"",
-              "emailID": result.docs[j].newOwnerDetails.emailID+"",
-              "address": result.docs[j].newOwnerDetails.address+""    
+				    "$class": "org.bhoomi.landrecords.AddOwner",
+				    "owner" : {
+					  "$class": "org.bhoomi.landrecords.Owner",
+					  "aadharNo": result.docs[j].newOwnerDetails.aadharNo+"",
+					  "ownerName": result.docs[j].newOwnerDetails.ownerName+"",
+					  "gender": result.docs[j].newOwnerDetails.gender+"",
+					  "mobileNo": result.docs[j].newOwnerDetails.mobileNo+"",
+					  "emailID": result.docs[j].newOwnerDetails.emailID+"",
+					  "address": result.docs[j].newOwnerDetails.address+""    
 						}
 					}
-          //POST CALL TO BLOCKCHAIN
-          requestify.request('http://13.232.73.187:3000/api/org.bhoomi.landrecords.AddOwner', {
-          method: 'POST',
-          body: ownerReq,
-          dataType: 'json'
+					  //POST CALL TO BLOCKCHAIN
+					requestify.request('http://13.232.73.187:3000/api/org.bhoomi.landrecords.AddOwner', {
+						method: 'POST',
+						body: ownerReq,
+						dataType: 'json'
 					})
 					.then(function(response) {
 						// get the response body
-						console.log(response.getBody());	
-            					//Land Record Updation
-            var landUpdateReq = {
-              "$class": "org.bhoomi.landrecords.UpdateAsset",
-              "landrecord": "resource:org.bhoomi.landrecords.LandRecord#"+result.docs[j].pid+"",
-              "newOwner": "resource:org.bhoomi.landrecords.Owner#"+result.docs[j].newOwnerDetails.aadharNo+""
-            }
-							requestify.request('http://13.232.73.187:3000/api/org.bhoomi.landrecords.UpdateAsset', {
-								method: 'POST',
-								body: landUpdateReq,
-								dataType: 'json'
-							})
-							.then(function(response) {
-								// get the response body
-								console.log(response.getBody());
-							})
-							.fail(function(response) {
-								console.log("Error occured while updating Owner to Land record");
-							});
+						console.log(response.getBody());
 					})
 					.fail(function(response) {
 						console.log("Error occured while creating new Owner");
-					});                                                       
+					}); 
+					var landUpdateReq = {
+					  "$class": "org.bhoomi.landrecords.UpdateAsset",
+					  "landrecord": "resource:org.bhoomi.landrecords.LandRecord#"+result.docs[j].pid+"",
+					  "newOwner": "resource:org.bhoomi.landrecords.Owner#"+result.docs[j].newOwnerDetails.aadharNo+""
+					}
+					//Land Record Updation
+					requestify.request('http://13.232.73.187:3000/api/org.bhoomi.landrecords.UpdateAsset', {
+						method: 'POST',
+						body: landUpdateReq,
+						dataType: 'json'
+					})
+					.then(function(response) {
+						// get the response body
+						console.log(response.getBody());
+					})
+					.fail(function(response) {
+						console.log("Error occured while updating Owner to Land record");
+					});	
                 }
             }
         }
