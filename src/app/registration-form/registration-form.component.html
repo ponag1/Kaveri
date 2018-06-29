@@ -106,7 +106,7 @@
  </table> 
  <div *ngIf='noSearchResults' style='color:red;' align='center'><strong>No matching results found !</strong></div>
  <div align="right">
-    <button class="btn btn-success" (click)= "loadRegistrationForm()" [disabled]="!transferEnabled">Transfer Ownership</button>
+    <button class="btn btn-success" (click)= "loadRegistrationForm()" [disabled]="!transferEnabled"><span class="glyphicon glyphicon-transfer"></span> Transfer Ownership</button>
  </div>
 </div>
 </ng-template> 
@@ -334,8 +334,8 @@
     </div>
 
     <div align="right">
-      <button class="btn btn-danger" (click) = "back()">Back</button>
-      <button type="submit" class="btn btn-success">Submit</button>
+      <button class="btn btn-danger" (click) = "back()"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</button>
+      <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check"></span> Submit</button>
     </div>
   </form>
 </div>
@@ -346,5 +346,5 @@
   <div class="alert alert-info">
     Please click on <strong>Submit New</strong> to submit another registration application !
   </div>
-  <div align="center"><button type="submit" class="btn btn-success" (click)="submitNew()">Submit New</button></div>
+  <div align="center"><button type="submit" class="btn btn-success" (click)="submitNew()"><span class="glyphicon glyphicon-edit"></span> Submit New</button></div>
 </ng-template>
