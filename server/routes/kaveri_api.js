@@ -117,14 +117,6 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
               "address": result.docs[j].newOwnerDetails.address+""    
 						}
 					}
-					
-					//Land Record Updation
-					var landUpdateReq = {
-					  "$class": "org.bhoomi.landrecords.UpdateAsset",
-					  "landrecord": "resource:org.bhoomi.landrecords.LandRecord#"+result.docs[j].pid+"",
-					  "newOwner": "resource:org.bhoomi.landrecords.Owner#"+result.docs[j].newOwnerDetails.aadharNo+""
-					}
-
           //POST CALL TO BLOCKCHAIN
           requestify.request('http://13.232.73.187:3000/api/org.bhoomi.landrecords.AddOwner', {
           method: 'POST',
@@ -133,7 +125,13 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
 					})
 					.then(function(response) {
 						// get the response body
-						console.log(response.getBody());													
+						console.log(response.getBody());	
+            					//Land Record Updation
+            var landUpdateReq = {
+              "$class": "org.bhoomi.landrecords.UpdateAsset",
+              "landrecord": "resource:org.bhoomi.landrecords.LandRecord#"+result.docs[j].pid+"",
+              "newOwner": "resource:org.bhoomi.landrecords.Owner#"+result.docs[j].newOwnerDetails.aadharNo+""
+            }
 							requestify.request('http://13.232.73.187:3000/api/org.bhoomi.landrecords.UpdateAsset', {
 								method: 'POST',
 								body: landUpdateReq,
