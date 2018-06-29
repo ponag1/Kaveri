@@ -55,26 +55,26 @@ export class RegistrationFormComponent implements OnInit {
           }
           console.log("search result survey"+this.noSearchResultsSurvey);
         }
+        this.manageLandRecordsService.getLandRecordsKaveriByPid(this.pid)
+        .subscribe(
+        response => {
+          console.log("res received from getLandRecords service" + JSON.stringify(response));
+          if (response !=null) {
+            this.landRecords = <LandRecord[]> response.landRecords;
+            if(this.landRecords!=null && this.landRecords.length > 0){
+              this.noSearchResults= false;
+              if(this.landRecords[0].isKaveriApproved==true)
+              this.transferEnabled=true;
+              else this.transferEnabled=false;               
+            }else{
+              this.noSearchResults = true;
+            }
+            this.fetchComplete = true; 
+          }
+        }); 
       }
     );
-    this.manageLandRecordsService.getLandRecordsKaveriByPid(this.pid)
-    .subscribe(
-      response => {
-            console.log("res received from getLandRecords service" + JSON.stringify(response));
-            if (response !=null) {
-              this.landRecords = <LandRecord[]> response.landRecords;
-             if(this.landRecords!=null && this.landRecords.length > 0){
-               this.noSearchResults= false;
-               if(this.landRecords[0].isKaveriApproved==true)
-               this.transferEnabled=true;
-               else this.transferEnabled=false;               
-             }else{
-               this.noSearchResults = true;
-             }
-              this.fetchComplete = true; 
-            }
-        }); 
-    }     
+  }     
 
   loadRegistrationForm(){
     this.template = "form2";
