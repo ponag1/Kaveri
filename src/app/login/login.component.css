@@ -1,3 +1,13 @@
 .login.alert{
   color:red;
 }
+.form-control{
+  height: 46px;
+}
+label{
+  color:white;
+  font-size:17px;
+}
+h3{
+  color:white;
+}
