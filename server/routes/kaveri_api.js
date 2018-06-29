@@ -98,8 +98,6 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
             for (var j = 0; j < result.docs.length; j++) {
                 console.log('Doc id:' + result.docs[i].id);
                 if (records[i].txnID == result.docs[j].txnID) {
-                    var tempPID = records[i].pid.toString();
-                    records[i].pid = tempPID;
                     records[i]["_id"] = result.docs[j]["_id"];
                     records[i]["_rev"] = result.docs[j]["_rev"];
                     documentIdsAdded.push(result.docs[i].txnID);
