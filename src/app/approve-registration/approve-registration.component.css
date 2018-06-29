@@ -1,1 +1,20 @@
-/* css */
+/* css */ 
+h3{
+   margin-top: -82px;
+   line-height: inherit;
+}
+table{
+    background-color: white;
+    border: 1px solid #bce8f1;
+    border-radius: 4px;
+}
+thead{
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+.form-control[disabled], .form-control[readonly]{
+    background-color: #ecf1ea !important;
+}
+.panel-title{
+    font-weight: bold;
+}
