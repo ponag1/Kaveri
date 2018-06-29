@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { LandRecord } from '../models/LandRecord';
 import { ManageLandRecordsService } from '../services/managelandrecords.service';
-import { Observable } from 'rxjs';
 import {
   FormGroup,
-  FormBuilder,
-  Validators,
-  FormControl
+  FormBuilder
 } from '@angular/forms';
 
 @Component({
@@ -37,7 +34,7 @@ export class ApproveRegistrationComponent implements OnInit {
     this.manageLandRecordsService.getLandRecordsKaveriByWard(this.wardNo)
     .subscribe(
       response => {
-            console.log("res received from getLandRecords service" + JSON.stringify(response));
+            console.log("res received from getLandRecords service kaveri ward" + JSON.stringify(response));
             if (response !=null) {
               //  this.router.navigate(['/success', this.landRecord.pid]);
               this.landRecords = <LandRecord[]> response.landRecords.filter(kaveriRec => !kaveriRec.isKaveriApproved);
@@ -61,7 +58,7 @@ export class ApproveRegistrationComponent implements OnInit {
     this.long = null;
     this.layoutForm = this.formBuilder.group({
       TimeStamp: [null],
-      pid: [''],
+      pid: [null],
       wardNo: [null],
       areaCode: [null],
       siteNo: [null],
