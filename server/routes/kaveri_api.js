@@ -134,7 +134,7 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
 					  "newOwner": "resource:org.bhoomi.landrecords.Owner#"+result.docs[j].newOwnerDetails.aadharNo+""
 					}
 					//Land Record Updation
-					requestify.request('http://13.232.73.187:3000/api/org.bhoomi.landrecords.UpdateAsset', {
+					requestify.request('https://land-record.mybluemix.net/api/org.bhoomi.landrecords.UpdateLandDetails', {
 						method: 'POST',
 						body: landUpdateReq,
 						dataType: 'json'
