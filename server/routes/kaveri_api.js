@@ -129,7 +129,7 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
 						console.log("Error occured while creating new Owner");
 					}); 
 					var landUpdateReq = {
-					  "$class": "org.bhoomi.landrecords.UpdateAsset",
+					  "$class": "org.bhoomi.landrecords.UpdateLandDetails",
 					  "landrecord": "resource:org.bhoomi.landrecords.LandRecord#"+result.docs[j].pid+"",
 					  "newOwner": "resource:org.bhoomi.landrecords.Owner#"+result.docs[j].newOwnerDetails.aadharNo+""
 					}
