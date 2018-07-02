@@ -116,7 +116,7 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
 						}
 					}
 					  //POST CALL TO BLOCKCHAIN
-					requestify.request('http://13.232.73.187:3000/api/org.bhoomi.landrecords.AddOwner', {
+					requestify.request('https://land-record.mybluemix.net/api/org.bhoomi.landrecords.AddOwner', {
 						method: 'POST',
 						body: ownerReq,
 						dataType: 'json'
