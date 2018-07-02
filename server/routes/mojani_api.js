@@ -40,12 +40,12 @@ var owner_details;
 var owner;
 var landRecordData = null;
 if(!isNaN(req.params.id)){
-	requestify.get('http://13.232.73.187:3000/api/org.bhoomi.landrecords.LandRecord/'+req.params.id).then(function(response) {
+	requestify.get('https://land-record.mybluemix.net/api/org.bhoomi.landrecords.LandRecord/'+req.params.id).then(function(response) {
 		land_details = response.getBody();
 		owner = land_details.owner;
 		owner = owner.split("#")[1];
 		console.log("Land details bC: "+JSON.stringify(land_details));
-			requestify.get('http://13.232.73.187:3000/api/org.bhoomi.landrecords.Owner/'+owner).then(function(response) {
+			requestify.get('https://land-record.mybluemix.net/api/org.bhoomi.landrecords.Owner/'+owner).then(function(response) {
 			owner_details = response.getBody();   
 			var tempPid = +land_details.pid ;
 			land_details.pid = tempPid;   
