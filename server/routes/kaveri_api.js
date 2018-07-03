@@ -101,51 +101,44 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
                     records[i]["_id"] = result.docs[j]["_id"];
                     records[i]["_rev"] = result.docs[j]["_rev"];
                     documentIdsAdded.push(result.docs[i].txnID);
-					console.log('calling block chain code');    
-					// New Owner Details
-					var ownerReq = {
-				    "$class": "org.bhoomi.landrecords.AddOwner",
-				    "owner" : {
-					  "$class": "org.bhoomi.landrecords.Owner",
-					  "aadharNo": result.docs[j].newOwnerDetails.aadharNo+"",
-					  "ownerName": result.docs[j].newOwnerDetails.ownerName+"",
-					  "gender": result.docs[j].newOwnerDetails.gender+"",
-					  "mobileNo": result.docs[j].newOwnerDetails.mobileNo+"",
-					  "emailID": result.docs[j].newOwnerDetails.emailID+"",
-					  "address": result.docs[j].newOwnerDetails.address+""    
-						}
-					}
-					  //POST CALL TO BLOCKCHAIN
-					requestify.request('https://landrecord.mybluemix.net/api/AddOwner', {
-						method: 'POST',
-						body: ownerReq,
-						dataType: 'json'
-					})
-					.then(function(response) {
-						// get the response body
-						console.log(response.getBody());
-					})
-					.fail(function(response) {
-						console.log("Error occured while creating new Owner");
-					}); 
-					var landUpdateReq = {
-					  "$class": "org.bhoomi.landrecords.UpdateLandDetails",
-					  "landrecord": "resource:org.bhoomi.landrecords.LandRecord#"+result.docs[j].pid+"",
-					  "newOwner": "resource:org.bhoomi.landrecords.Owner#"+result.docs[j].newOwnerDetails.aadharNo+""
-					}
-					//Land Record Updation
-					requestify.request('https://landrecord.mybluemix.net/api/UpdateLandDetails', {
-						method: 'POST',
-						body: landUpdateReq,
-						dataType: 'json'
-					})
-					.then(function(response) {
-						// get the response body
-						console.log(response.getBody());
-					})
-					.fail(function(response) {
-						console.log("Error occured while updating Owner to Land record");
-					});	
+										console.log('calling block chain code');    
+										// New Owner Details
+										var ownerReq = {
+											"$class": "org.bhoomi.landrecords.AddOwner",
+											"owner" : {
+											"$class": "org.bhoomi.landrecords.Owner",
+											"aadharNo": result.docs[j].newOwnerDetails.aadharNo+"",
+											"ownerName": result.docs[j].newOwnerDetails.ownerName+"",
+											"gender": result.docs[j].newOwnerDetails.gender+"",
+											"mobileNo": result.docs[j].newOwnerDetails.mobileNo+"",
+											"emailID": result.docs[j].newOwnerDetails.emailID+"",
+											"address": result.docs[j].newOwnerDetails.address+""    
+											}
+										}										 
+										var landUpdateReq = {
+											"$class": "org.bhoomi.landrecords.UpdateLandDetails",
+											"landrecord": "resource:org.bhoomi.landrecords.LandRecord#"+result.docs[j].pid+"",
+											"newOwner": "resource:org.bhoomi.landrecords.Owner#"+result.docs[j].newOwnerDetails.aadharNo+""
+										}
+										//Land Record Updation
+										requestify.request('https://landrecord.mybluemix.net/api/UpdateLandDetails', {
+											method: 'POST',
+											body: landUpdateReq,
+											dataType: 'json'
+										})
+										.then(function(response) {
+											// get the response body
+											console.log(response.getBody());
+											requestify.request('https://landrecord.mybluemix.net/api/AddOwner', {
+												method: 'POST',
+												body: ownerReq,
+												dataType: 'json'
+											})
+											.then(function(response) {
+												// get the response body
+												console.log(response.getBody());
+											});
+										});
                 }
             }
         }
