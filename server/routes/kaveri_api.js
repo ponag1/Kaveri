@@ -116,7 +116,7 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
 						}
 					}
 					  //POST CALL TO BLOCKCHAIN
-					requestify.request('https://land-record.mybluemix.net/api/org.bhoomi.landrecords.AddOwner', {
+					requestify.request('https://landrecord.mybluemix.net/api/AddOwner', {
 						method: 'POST',
 						body: ownerReq,
 						dataType: 'json'
@@ -134,7 +134,7 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
 					  "newOwner": "resource:org.bhoomi.landrecords.Owner#"+result.docs[j].newOwnerDetails.aadharNo+""
 					}
 					//Land Record Updation
-					requestify.request('https://land-record.mybluemix.net/api/org.bhoomi.landrecords.UpdateLandDetails', {
+					requestify.request('https://landrecord.mybluemix.net/api/UpdateLandDetails', {
 						method: 'POST',
 						body: landUpdateReq,
 						dataType: 'json'
