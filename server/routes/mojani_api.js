@@ -45,7 +45,7 @@ if(!isNaN(req.params.id)){
 		owner = land_details.owner;
 		owner = owner.split("#")[1];
 		console.log("Land details bC: "+JSON.stringify(land_details));
-			requestify.get('https://land-record.mybluemix.net/api/org.bhoomi.landrecords.Owner/'+owner).then(function(response) {
+			requestify.get('https://landrecord.mybluemix.net/api/Assignee/'+owner).then(function(response) {
 			owner_details = response.getBody();   
 			var tempPid = +land_details.pid ;
 			land_details.pid = tempPid;   
