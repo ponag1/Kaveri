@@ -40,7 +40,7 @@ var owner_details;
 var owner;
 var landRecordData = null;
 if(!isNaN(req.params.id)){
-	requestify.get('https://land-record.mybluemix.net/api/org.bhoomi.landrecords.LandRecord/'+req.params.id).then(function(response) {
+	requestify.get('https://landrecord.mybluemix.net/api/LandRecord/'+req.params.id).then(function(response) {
 		land_details = response.getBody();
 		owner = land_details.owner;
 		owner = owner.split("#")[1];
