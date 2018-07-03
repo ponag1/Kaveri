@@ -140,7 +140,14 @@ export class RegistrationFormComponent implements OnInit {
             response => {
               console.log("res received getLandRecordbyPid service" + JSON.stringify(response));
               if (response !=null && response.success) {
-                this.landRecord = <LandRecord> response.landRecords;               
+                this.landRecord = <LandRecord> response.landRecords;  
+                this.landRecord.newOwnerDetails = <Owner> this.landRecord.ownerDetails;
+                this.landRecord.ownerDetails = <Owner> null;
+                this.landRecord.ownerDetails.aadharNo = 0;
+                this.landRecord.ownerDetails.address = "NA";
+                this.landRecord.ownerDetails.emailID = "NA";
+                this.landRecord.ownerDetails.mobileNo = 0;
+                this.landRecord.ownerDetails.ownerName = "LAND AUTHORITY";
                 console.log("landRecord object received:" + this.landRecord);
                 if(response.sketchURL!=null && response.sketchURL!=""){
                   this.sketchURL = response.sketchURL;
