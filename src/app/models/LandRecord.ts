@@ -12,6 +12,7 @@ export class LandRecord {
   isMojaniSubmitted : boolean;
   isMojaniApproved :  boolean;
   isKaveriApproved: boolean;
+  isKaveriRejected: boolean;
   sketchURL: string;
   constructor() { }
 

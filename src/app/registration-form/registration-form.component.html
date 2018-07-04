@@ -88,10 +88,11 @@
           <th>To Owner Name</th>
           <th>To Owner Aadhaar No</th>
           <th>To Owner Mobile No</th>   
-          <th>Is Kaveri Approved</th>       
+          <th>Is Kaveri Approved</th>  
+          <th>Is Kaveri Rejected</th>     
       </tr>
   </thead>
-  <tbody>
+  <tbody *ngIf='!noSearchResults'>
       <tr *ngFor="let land of landRecords">
           <td>{{land.txnID}}</td>
           <td>{{land.ownerDetails.ownerName}}</td>
@@ -100,11 +101,16 @@
           <td>{{land.newOwnerDetails.ownerName}}</td>
           <td>{{land.newOwnerDetails.aadharNo}}</td>
           <td>{{land.newOwnerDetails.mobileNo}}</td>  
-          <td><input type="checkbox" name='kaveriApproval' [ngModel]='land.isKaveriApproved' disabled/></td>       
+          <td><input type="checkbox" name='kaveriApproval' [ngModel]='land.isKaveriApproved' disabled/></td> 
+          <td><input type="checkbox" name='kaveriRejected' [ngModel]='land.isKaveriRejected' disabled/></td>      
       </tr>
   </tbody>
- </table> 
- <div *ngIf='noSearchResults' style='color:red;' align='center'><strong>No matching results found !</strong></div>
+  <tbody *ngIf='noSearchResults'>
+    <tr>
+      <td colspan="9"><div style='color:red;' align='center'><strong>No matching results found !</strong></div></td>
+    </tr>
+  </tbody>
+</table> 
  <div align="right">
     <button class="btn btn-success" (click)= "loadRegistrationForm()" [disabled]="!transferEnabled"><span class="glyphicon glyphicon-transfer"></span> Transfer Ownership</button>
  </div>

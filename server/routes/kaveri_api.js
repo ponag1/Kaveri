@@ -162,6 +162,52 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
     });
 });
 
+router.post('/api/updateKaveriRejectedRecords', (req, res) => {
+	console.log('Inside Express api to update new land record');
+	var records = req.body; //Array of land records
+	console.log("list of documents" + JSON.stringify(records));
+	var documentIdsAdded = [];
+	kaveri.find({
+			selector: {
+					txnID: records[0].txnID
+			}
+	}, function(er, result) {
+			if (er) {
+					console.log("Error finding documents");
+			}
+			console.log('Found documents with Txn ID ' + records[0].txnID + ":" + result.docs.length);
+			for (var i = 0; i < records.length; i++) {
+					for (var j = 0; j < result.docs.length; j++) {
+							console.log('Doc id:' + result.docs[i].id);
+							if (records[i].txnID == result.docs[j].txnID) {
+									records[i]["_id"] = result.docs[j]["_id"];
+									records[i]["_rev"] = result.docs[j]["_rev"];
+									documentIdsAdded.push(result.docs[i].txnID);
+									console.log('calling block chain code');
+							}
+					}
+			}
+			kaveri.bulk({
+					docs: records
+			}, function(err, doc) {
+					if (err) {
+							console.log("Error updating records to Kaveri" + err);
+							res.json({
+									success: false,
+									message: err + ""
+							});
+					} else {
+							console.log("success saving records to Kaveri");
+							res.json({
+									success: true,
+									documentIdsAdded: documentIdsAdded
+							});
+					}
+			});
+	});
+});
+
+
 /* GET API to get land records from MOJANI using ward No*/
 router.get('/api/getLandRecordsKaveriByWard/:id', (req, res) => {
   console.log('Inside Express api to get land records');

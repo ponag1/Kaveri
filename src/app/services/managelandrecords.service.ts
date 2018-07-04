@@ -42,10 +42,18 @@ export class ManageLandRecordsService {
 
    // API: POST /landRecords/landRecord[]
     public updateKaveriApprovedRecords(landRecords: LandRecord[]){
-      console.log("Inside updateMojaniApprovedRecords method in manageLandRecord service");
+      console.log("Inside updateKaveriApprovedRecords method in manageLandRecord service");
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
       return this.http.post('/manageKaveriRecords/api/updateKaveriApprovedRecords', JSON.stringify(landRecords), { headers: headers })
+        .map(res => res.json());     
+    }
+
+    public updateKaveriRejectedRecords(landRecords: LandRecord[]){
+      console.log("Inside updateKaveriRejectedRecords method in manageLandRecord service");
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      return this.http.post('/manageKaveriRecords/api/updateKaveriRejectedRecords', JSON.stringify(landRecords), { headers: headers })
         .map(res => res.json());     
     }
 

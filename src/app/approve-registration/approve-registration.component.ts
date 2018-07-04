@@ -37,7 +37,7 @@ export class ApproveRegistrationComponent implements OnInit {
             console.log("res received from getLandRecords service kaveri ward" + JSON.stringify(response));
             if (response !=null) {
               //  this.router.navigate(['/success', this.landRecord.pid]);
-              this.landRecords = <LandRecord[]> response.landRecords.filter(kaveriRec => !kaveriRec.isKaveriApproved);
+              this.landRecords = <LandRecord[]> response.landRecords.filter(kaveriRec => !kaveriRec.isKaveriApproved).filter(nonRejectedRec => !nonRejectedRec.isKaveriRejected);
              if(this.landRecords!=null && this.landRecords.length > 0){
                this.noSearchResults= false;
              }else{
@@ -116,7 +116,31 @@ export class ApproveRegistrationComponent implements OnInit {
     console.log("ApplicationData" + JSON.stringify(this.landRecords));
     this.approvedRecords =  this.landRecords.filter(
     (rec) => rec.isKaveriApproved);
+    this.approvedRecords.forEach(
+      (record,index) => {
+          record.isKaveriRejected = false;
+    });
     this.manageLandRecordsService.updateKaveriApprovedRecords(this.approvedRecords)
+    .subscribe(
+      response => {
+        console.log("res received updateLandrecordKaveri service" + JSON.stringify(response));
+        if (response !=null && response.success) {
+          //  this.router.navigate(['/success', this.landRecord.pid]);
+         this.template = "form3";
+        }   
+      });
+  }
+
+  onReject(){
+    console.log("ApplicationDataReject" + JSON.stringify(this.landRecords));
+    this.approvedRecords =  this.landRecords.filter(
+    (rec) => rec.isKaveriApproved);
+    this.approvedRecords.forEach(
+      (record,index) => {
+          record.isKaveriRejected = true;
+          record.isKaveriApproved= false;
+    });
+    this.manageLandRecordsService.updateKaveriRejectedRecords(this.approvedRecords)
     .subscribe(
       response => {
         console.log("res received updateLandrecordKaveri service" + JSON.stringify(response));

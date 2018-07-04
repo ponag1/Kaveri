@@ -31,10 +31,10 @@
           <th>Area Code</th>
           <th>Site No</th>
           <th>Total Area</th>
-          <th>Approve</th>
+          <th>Approve/Reject</th>
       </tr>
   </thead> 
-  <tbody>
+  <tbody *ngIf='!noSearchResults'>
       <tr *ngFor="let land of landRecords">
           <td><a (click) = "viewData(land.txnID)" style="cursor: pointer;">{{land.txnID}}</a></td>
           <td>{{land.pid}}</td>
@@ -45,10 +45,15 @@
          <td><input type="checkbox" name='approval'  [(ngModel)]='land.isKaveriApproved'  #approval="ngModel" /></td>
       </tr>
   </tbody>
+  <tbody *ngIf='noSearchResults'>
+    <tr>
+      <td colspan="7"><div style='color:red;' align='center'><strong>No matching results found !</strong></div></td>
+    </tr>
+  </tbody>
 </table> 
-<div *ngIf='noSearchResults' style='color:red;' align='center'><strong>No matching results found !</strong></div>
 <div *ngIf='!noSearchResults' align='right'>
-<button type="submit" class="btn btn-success" (click)= "onSubmit()"><span class="glyphicon glyphicon-ok-sign"></span> Approve</button>
+  <button type="submit" class="btn btn-danger" (click)= "onReject()"><span class="glyphicon glyphicon-remove-sign"></span> Reject</button>
+  <button type="submit" class="btn btn-success" (click)= "onSubmit()"><span class="glyphicon glyphicon-ok-sign"></span> Approve</button>
 </div>
 </div>
 </ng-template>
@@ -281,13 +286,13 @@
 <!--Success message for the approval-->
 <ng-template #applicationSuccess >
 <div class="alert alert-success"> <strong>Success!</strong>
-All the below approved records have been committed to the HyperLedger. Their unique Transaction Ids are listed below :
+All the below approved/Rejected records have been updated. Their unique Transaction Ids are listed below :
 <ul *ngFor= "let rec of approvedRecords">
   <li>{{rec.txnID}}</li>
 </ul>
 </div>
   <div class="alert alert-info">
-    Please click on <strong>OK</strong> to approve other applications !
+    Please click on <strong>OK</strong> to approve/Reject other applications !
   </div>
   <div align="center"><button type="submit" class="btn btn-success" (click)="submitNew()">OK</button></div>
 </ng-template>
