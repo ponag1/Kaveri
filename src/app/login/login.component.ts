@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   constructor(private loginAuthService : LoginAuthenticationService, private router: Router, private route :ActivatedRoute) {}
 
   ngOnInit() {
-    document.body.style.backgroundImage = "url('/assets/images/land-patta-1.jpg')";
+    document.body.style.backgroundImage = "url('/assets/images/land-patta-2.jpg')";
     document.body.style.backgroundSize = "cover";
   }
 
