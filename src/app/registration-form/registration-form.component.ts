@@ -63,7 +63,7 @@ export class RegistrationFormComponent implements OnInit {
             this.landRecords = <LandRecord[]> response.landRecords;
             if(this.landRecords!=null && this.landRecords.length > 0){
               this.noSearchResults= false;
-              if(this.landRecords[0].isKaveriApproved==true)
+              if(this.landRecords[0].isKaveriApproved==true || this.landRecords[0].isKaveriRejected==true)
               this.transferEnabled=true;
               else this.transferEnabled=false;               
             }else{
@@ -123,8 +123,10 @@ export class RegistrationFormComponent implements OnInit {
             response => {
               console.log("res received getLandRecordbyPid service" + JSON.stringify(response));
               if (response !=null && response.success) {
-                this.landRecord = <LandRecord> response.landRecords[response.landRecords.length-1];
-                this.landRecord.ownerDetails = <Owner> this.landRecord.newOwnerDetails;
+                this.landRecord = <LandRecord> response.landRecords[0];
+                if(this.landRecord.isKaveriApproved==true){
+                  this.landRecord.ownerDetails = <Owner> this.landRecord.newOwnerDetails;
+                }
                 this.landRecord.newOwnerDetails = <Owner> new Owner();
                 console.log("landRecord object received:" + JSON.stringify(this.landRecord));
                 if(response.landRecords[0].sketchURL!=null && response.landRecords[0].sketchURL!=""){
