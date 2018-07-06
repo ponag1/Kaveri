@@ -144,7 +144,7 @@ export class RegistrationFormComponent implements OnInit {
               if (response !=null && response.success) {
                 this.landRecord = <LandRecord> response.landRecords;  
                 this.landRecord.newOwnerDetails = <Owner> this.landRecord.ownerDetails;
-                this.landRecord.ownerDetails = <Owner> null;
+                this.landRecord.ownerDetails = <Owner> new Owner();
                 this.landRecord.ownerDetails.aadharNo = 0;
                 this.landRecord.ownerDetails.address = "NA";
                 this.landRecord.ownerDetails.emailID = "NA";
