@@ -58,6 +58,7 @@
           </div>
           <div class="col-md-4">
               <label for="mojaniApproved" class="control-label">Is Mojani Approved</label>
+              <br>
               <input type="checkbox" id="mojaniApproved" name="mojaniApproved" [ngModel]="landRecordsMojani.isMojaniApproved" disabled />
             </div>
         </div>
@@ -68,6 +69,53 @@
           </div>
         </div>
         <div class="form-group" *ngIf='noSearchResultsSurvey'>
+           <div class="col-md-12">
+            <p style='color:red;' align='center'><strong>No matching results found !</strong></p>
+           </div>
+        </div>
+      </div>
+    </div>
+	  <div class="panel panel-info">
+      <div class="panel-heading">
+        <h1 class="panel-title">Current Land Allotee Details</h1>
+      </div>
+      <div class="panel-body"> 
+          <div class="form-group" *ngIf="!noSearchResults">
+          <div class="col-md-4">
+            <label for="ownerName1" class="control-label">Allottee Name</label>
+            <input type="text" id="ownerName1" class="form-control" name="ownerName1" [ngModel]="currentOwner.ownerName" readonly>
+          </div>
+          <div class="col-md-4">
+            <label for="aadharNo1" class="control-label">Aadhar #</label>
+            <input type="text" id="aadharNo1" class="form-control" name="aadharNo1" [ngModel]="currentOwner.aadharNo" readonly/>
+          </div>
+          <div class="col-md-4">
+          <div> <label class="control-label">Gender</label></div>
+            <label class="md-check radio-inline">
+              <input type="radio" value="M" name="gender1" [ngModel]="currentOwner.gender" disabled>Male
+            </label>
+            <label class="md-check radio-inline">
+              <input type="radio" value="F" name="gender1" [ngModel]="currentOwner.gender" disabled>Female
+            </label>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="!noSearchResults">
+          <div class="col-md-4">
+            <label for="mobileNo1" class="control-label">Mobile</label>
+            <input type="text" id="mobileNo1" class="form-control" name="mobileNo1" [ngModel]="currentOwner.mobileNo" readonly/>
+          </div>
+          <div class="col-md-4">
+            <label for="emailID1" class="control-label">Email ID</label>
+            <input type="text" id="emailID1" class="form-control" name="emailID1" [ngModel]="currentOwner.emailID" readonly />
+          </div>
+        </div>
+        <div class="form-group" *ngIf="!noSearchResults">
+          <div class="col-md-12">
+            <div><label for="ownerAddress1" class="control-label">Allottee Address</label></div>
+            <input type="text" id="ownerAddress1" class="form-control" name="address1" [ngModel]="currentOwner.address" readonly/>
+          </div>
+        </div>
+        <div class="form-group" *ngIf='noSearchResults'>
            <div class="col-md-12">
             <p style='color:red;' align='center'><strong>No matching results found !</strong></p>
            </div>
