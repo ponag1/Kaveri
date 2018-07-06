@@ -35,6 +35,11 @@ export class RegistrationFormComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private manageLandRecordsService : ManageLandRecordsService, private router: Router,private route: ActivatedRoute) { }
  
   ngOnInit() {
+    document.getElementById("heading").innerHTML ="KAVERI- Registration Application";
+  }
+
+  ngOnDestroy() {
+    document.getElementById("heading").innerHTML ="KAVERI";
   }
   
   search(){

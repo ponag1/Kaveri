@@ -27,6 +27,11 @@ export class ApproveRegistrationComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private manageLandRecordsService : ManageLandRecordsService) { }
 
   ngOnInit() {
+    document.getElementById("heading").innerHTML ="KAVERI- Approval registration Application";
+  }
+
+  ngOnDestroy() {
+    document.getElementById("heading").innerHTML ="KAVERI";
   }
 
   search(){
