@@ -5,15 +5,12 @@ h3{
 }
 table{
     background-color: white;
-    border: 1px solid #bce8f1;
+    border: 1px solid #337ab7;
     border-radius: 4px;
 }
 thead{
-    background-color: #dff0d8;
-    color: #3c763d;
-}
-.form-control[disabled], .form-control[readonly]{
-    background-color: #ecf1ea !important;
+    background-color: #337ab7;
+    color: white;
 }
 .panel-title{
     font-weight: bold;

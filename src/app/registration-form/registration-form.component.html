@@ -4,7 +4,7 @@
 <div align="right"><app-logout></app-logout></div>
 <div *ngIf ="template==='form1';then registrationForm1 else registrationForm2"></div>
 <ng-template #registrationForm1>
-  <div class="panel panel-info">
+  <div class="panel panel-primary">
   <div class="panel-heading">
     <h1 class="panel-title">Search Criteria</h1>
   </div>
@@ -23,7 +23,7 @@
 <!--Search results of the land records for Registration -->
 <div *ngIf= "fetchComplete" > 
    <form class="form-horizontal">
-    <div class="panel panel-info">
+    <div class="panel panel-primary">
       <div class="panel-heading">
         <h1 class="panel-title">Survey Land Allotee Details</h1>
       </div>
@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-	  <div class="panel panel-info">
+	  <div class="panel panel-primary">
       <div class="panel-heading">
         <h1 class="panel-title">Current Land Allotee Details</h1>
       </div>
@@ -159,6 +159,7 @@
  <div align="right">
     <button class="btn btn-success" (click)= "loadRegistrationForm()" [disabled]="!transferEnabled"><span class="glyphicon glyphicon-transfer"></span> Transfer Ownership</button>
  </div>
+ <br>
 </div>
 </ng-template> 
 
@@ -168,7 +169,7 @@
   <div class="applicationForm">
   <form class="form-horizontal" [formGroup]="layoutForm" (ngSubmit)="onSubmit()">
     <fieldset disabled>
-    <div class="panel panel-info">
+    <div class="panel panel-primary">
       <div class="panel-heading">
         <h1 class="panel-title">Land Details</h1>
       </div>
@@ -200,7 +201,7 @@
       </div>
     </div>
 
-    <div class="panel panel-info">
+    <div class="panel panel-primary">
       <div class="panel-heading">
         <h1 class="panel-title">Geographic Data</h1>
       </div>
@@ -247,7 +248,7 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-info">
+    <div class="panel panel-primary">
       <div class="panel-heading">
         <h1 class="panel-title">Pre Mutation Sketch</h1>
       </div>
@@ -259,7 +260,7 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-info">
+    <div class="panel panel-primary">
       <div class="panel-heading">
         <h1 class="panel-title">Land Allottee Details</h1>
       </div>
@@ -315,7 +316,7 @@
     </div>
     </fieldset>
 
-    <div class="panel panel-info">
+    <div class="panel panel-primary">
       <div class="panel-heading">
         <h1 class="panel-title">New allotee Details</h1>
       </div>
@@ -369,7 +370,7 @@
           </div>
     </div>
 
-    <div class="panel panel-info">
+    <div class="panel panel-primary">
       <div class="panel-heading">
         <h1 class="panel-title">Sale Details</h1>
       </div>
@@ -388,6 +389,7 @@
       <button class="btn btn-danger" (click) = "back()"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</button>
       <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check"></span> Submit</button>
     </div>
+    <br>
   </form>
 </div>
 </ng-container>

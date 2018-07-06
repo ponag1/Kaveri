@@ -4,7 +4,7 @@
 <div align="right"><app-logout></app-logout></div>
  <div *ngIf="template==='form1';then approveForm1 else approveForm2" ></div>
  <ng-template #approveForm1>
-  <div class="panel panel-success">
+  <div class="panel panel-primary">
   <div class="panel-heading">
     <h1 class="panel-title">Search Criteria</h1>
   </div>
@@ -55,6 +55,7 @@
   <button type="submit" class="btn btn-danger" (click)= "onReject()"><span class="glyphicon glyphicon-remove-sign"></span> Reject</button>
   <button type="submit" class="btn btn-success" (click)= "onSubmit()"><span class="glyphicon glyphicon-ok-sign"></span> Approve</button>
 </div>
+<br>
 </div>
 </ng-template>
 <ng-template #approveForm2>
@@ -62,7 +63,7 @@
   <div class="applicationForm">
   <form class="form-horizontal" [formGroup]="layoutForm" (ngSubmit)="onSubmit()">
     <fieldset disabled>
-    <div class="panel panel-success">
+    <div class="panel panel-primary">
       <div class="panel-heading">
         <h1 class="panel-title">Land Details</h1>
       </div>
@@ -94,7 +95,7 @@
       </div>
     </div>
 
-    <div class="panel panel-success">
+    <div class="panel panel-primary">
       <div class="panel-heading">
         <h1 class="panel-title">Geographic Data</h1>
       </div>
@@ -141,7 +142,7 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-success">
+    <div class="panel panel-primary">
       <div class="panel-heading">
         <h1 class="panel-title">Pre Mutation Sketch</h1>
       </div>
@@ -153,7 +154,7 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-success">
+    <div class="panel panel-primary">
       <div class="panel-heading">
         <h1 class="panel-title">Land Allottee Details</h1>
       </div>
@@ -207,7 +208,7 @@
             </div>
           </div>
     </div>
-    <div class="panel panel-success">
+    <div class="panel panel-primary">
       <div class="panel-heading">
         <h1 class="panel-title">New allotee Details</h1>
       </div>
@@ -261,7 +262,7 @@
           </div>
     </div>
 
-    <div class="panel panel-success">
+    <div class="panel panel-primary">
       <div class="panel-heading">
         <h1 class="panel-title">Sale Details</h1>
       </div>
@@ -278,7 +279,8 @@
     </fieldset>                  
     <div align="right">
       <button class="btn btn-danger" (click) = "back()"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</button>
-    </div>    
+    </div>
+    <br>    
   </form>
 </div>
 </ng-container>
