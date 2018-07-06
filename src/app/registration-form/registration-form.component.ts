@@ -30,6 +30,7 @@ export class RegistrationFormComponent implements OnInit {
   transferEnabled : boolean = false;
   formData: FormData = new FormData();
   sketchURL: string;
+  currentOwner: Owner = new Owner();
 
   constructor(private formBuilder: FormBuilder, private manageLandRecordsService : ManageLandRecordsService, private router: Router,private route: ActivatedRoute) { }
  
@@ -59,13 +60,18 @@ export class RegistrationFormComponent implements OnInit {
         .subscribe(
         response => {
           console.log("res received from getLandRecords service" + JSON.stringify(response));
+          this.currentOwner = <Owner> new Owner(); 
           if (response !=null) {
             this.landRecords = <LandRecord[]> response.landRecords;
             if(this.landRecords!=null && this.landRecords.length > 0){
               this.noSearchResults= false;
               if(this.landRecords[0].isKaveriApproved==true || this.landRecords[0].isKaveriRejected==true)
               this.transferEnabled=true;
-              else this.transferEnabled=false;               
+              else this.transferEnabled=false; 
+              this.currentOwner = <Owner> this.landRecords[0].ownerDetails;
+              if(this.landRecords[0].isKaveriApproved==true){
+                this.currentOwner = <Owner> this.landRecords[0].newOwnerDetails;
+              }     
             }else{
               this.noSearchResults = true;
             }
@@ -149,7 +155,7 @@ export class RegistrationFormComponent implements OnInit {
                 this.landRecord.ownerDetails.address = "NA";
                 this.landRecord.ownerDetails.emailID = "NA";
                 this.landRecord.ownerDetails.mobileNo = 0;
-                this.landRecord.ownerDetails.ownerName = "LAND AUTHORITY";
+                this.landRecord.ownerDetails.ownerName = "Land Authority";
                 console.log("landRecord object received:" + this.landRecord);
                 if(response.sketchURL!=null && response.sketchURL!=""){
                   this.sketchURL = response.sketchURL;
