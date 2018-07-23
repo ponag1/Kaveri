@@ -40,12 +40,12 @@ router.get('/api/getLandRecordsMojaniByPid/:id', (req, res) => {
 	var owner;
 	var landRecordData = null;
 	if(!isNaN(req.params.id)){
-		requestify.get('https://landrecord.mybluemix.net/api/LandRecord/'+req.params.id).then(function(response) {
+		requestify.get('https://13.232.73.187:3000/api/LandRecord/'+req.params.id).then(function(response) {
 			land_details = response.getBody();
 			owner = land_details.owner;
 			owner = owner.split("#")[1];
 			console.log("Land details bC: "+JSON.stringify(land_details));
-			requestify.get('https://landrecord.mybluemix.net/api/Assignee/'+owner).then(function(response) {
+			requestify.get('https://13.232.73.187:3000/api/Assignee/'+owner).then(function(response) {
 				owner_details = response.getBody();  
 				var tempPid = +land_details.pid ;
 				land_details.pid = tempPid;   
@@ -108,7 +108,7 @@ router.get('/api/getLandRecordsMojaniByPid/:id', (req, res) => {
 						console.log('Found documents with PID count mojani:'+ req.params.id +":"+ result.docs.length);
 						owner=result.docs[0].ownerDetails.aadharNo;
 						console.log("owner:"+owner);
-						requestify.get('https://landrecord.mybluemix.net/api/Assignee/'+owner).then(function(response) {
+						requestify.get('https://13.232.73.187:3000/api/Assignee/'+owner).then(function(response) {
 							owner_details = response.getBody();  
 							var tempPid = +land_details.pid ;
 							land_details.pid = tempPid;  
