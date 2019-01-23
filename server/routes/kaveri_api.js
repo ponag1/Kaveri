@@ -121,7 +121,7 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
 											"newOwner": "resource:org.bhoomi.landrecords.Owner#"+result.docs[j].newOwnerDetails.aadharNo+""
 										}
 										//Land Record Updation
-										requestify.request('https://13.232.73.187:3000/api/AddOwner', {
+										requestify.request('http://ec2-52-206-196-6.compute-1.amazonaws.com:3001/api/org.bhoomi.landrecords.AddOwner', {
 											method: 'POST',
 											body: ownerReq,
 											dataType: 'json'
@@ -129,7 +129,7 @@ router.post('/api/updateKaveriApprovedRecords', (req, res) => {
 										.then(function(response) {
 											// get the response body
 											console.log(response.getBody());
-											requestify.request('https://13.232.73.187:3000/api/UpdateLandDetails', {
+											requestify.request('http://ec2-52-206-196-6.compute-1.amazonaws.com:3001/api/org.bhoomi.landrecords.UpdateLandDetails', {
 												method: 'POST',
 												body: landUpdateReq,
 												dataType: 'json'
